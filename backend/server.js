@@ -15,7 +15,10 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 // CORS Middleware
-app.use(cors())
+if(process.env.NODE_ENV === "development") {
+    app.use(cors( { origin: `${process.env.CLIENT_URL}` }));
+}
+
 
 // Access routes
 app.get("/api", (req, res) => {
