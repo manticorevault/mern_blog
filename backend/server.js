@@ -6,12 +6,14 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+// Import routes
+const blogRoutes = require("./routes/blog");
 
 // App
 const app = express()
 
 // Database
-mongoose.connect(process.env.DATABASE, { 
+mongoose.connect(process.env.DATABASE_CLOUD, { 
                                 useNewUrlParser: true, 
                                 useCreateIndex: true, 
                                 useFindAndModify: false 
@@ -23,11 +25,13 @@ app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
+// Routes Middleware
+app.use("/api", blogRoutes);
+
 // CORS Middleware
 if(process.env.NODE_ENV === "development") {
     app.use(cors( { origin: `${process.env.CLIENT_URL}` }));
 }
-
 
 // Access routes
 app.get("/api", (req, res) => {
