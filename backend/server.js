@@ -8,6 +8,7 @@ require("dotenv").config();
 
 // Import routes
 const blogRoutes = require("./routes/blog");
+const authRoutes = require("./routes/auth");
 
 // App
 const app = express()
@@ -27,6 +28,7 @@ app.use(cookieParser())
 
 // Routes Middleware
 app.use("/api", blogRoutes);
+app.use("/api", authRoutes);
 
 // CORS Middleware
 if(process.env.NODE_ENV === "development") {
