@@ -3,9 +3,9 @@ const shortId = require("shortid");
 
 exports.signup = (req, res) => {
     User.findOne({ email: req.body.email }).exec((err, user) => {
-        if(user) {
+        if (user) {
             return res.status(400).json({
-                error: "This email is already in use"
+                error: "This e-mail is already in use"
             });
         }
 
@@ -13,15 +13,17 @@ exports.signup = (req, res) => {
         let username = shortId.generate();
         let profile = `${process.env.CLIENT_URL}/profile/${username}`;
 
-        let newUser = new User({ name, password, profile, username });
+        let newUser = new User({ name, email, password, profile, username });
         newUser.save((err, success) => {
-            if(err) {
+            if (err) {
                 return res.status(400).json({
                     error: err
-                })
+                });
             }
-        })
-        
-        res.json({ message: "You successfully signed up! Please, login" })
-    })
+            res.json({
+                message: "Successfully signed in! Now you can log in!"
+            });
+        });
+    });
 };
+

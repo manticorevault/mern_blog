@@ -11,18 +11,15 @@ const blogRoutes = require("./routes/blog");
 const authRoutes = require("./routes/auth");
 
 // App
-const app = express()
+const app = express();
 
 // Database
-mongoose.connect(process.env.DATABASE_CLOUD, { 
-                                useNewUrlParser: true, 
-                                useCreateIndex: true, 
-                                useFindAndModify: false 
-                            }
-        ).then(() => console.log("Database Connected"))
-        .catch(err => {
-            console.log(err);
-        });
+mongoose
+    .connect(process.env.DATABASE_CLOUD, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
+    .then(() => console.log('Database Connected'))
+    .catch(err => {
+        console.log(err);
+    });
 
 // Middleware
 app.use(morgan("dev"))
