@@ -19,7 +19,10 @@ mongoose.connect(process.env.DATABASE_CLOUD, {
                                 useCreateIndex: true, 
                                 useFindAndModify: false 
                             }
-                ).then(() => console.log("Database Connected"));
+        ).then(() => console.log("Database Connected"))
+        .catch(err => {
+            console.log(err);
+        });
 
 // Middleware
 app.use(morgan("dev"))
