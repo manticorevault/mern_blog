@@ -59,3 +59,16 @@ exports.login = (req, res) => {
     });
 };
 
+exports.logout = (req, res) => {
+    res.clearCookie("token")
+    res.json({
+        message: "Successfully logged out!"
+    });
+};
+
+exports.requireLogin = expressJWT({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+    userProperty: "auth",
+});
+
