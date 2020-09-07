@@ -1,11 +1,23 @@
+const { useState } from "react"
+
+
 const RegisterComponent = () => {
-    const handleSubmit = () => {
+    const [values, setValues] = useState({
+        name: "",
+        email: "",
+        password: "",
+        error: "",
+        loading: false,
+        message: "",
+        showForm: true
+    })
+
+    const handleSubmit = e => {
         e.preventDefault()
         console.log("Submit handled")
     }
 
-    const handleChange = (e) => {
-        event.preventDefault()
+    const handleChange = e => {
         console.log(e.target.value)
     }
 
@@ -20,6 +32,28 @@ const RegisterComponent = () => {
                         placeholder="Insert Your Name">
 
                     </input>
+
+                    <input 
+                        onChange={ handleChange }
+                        type="email" 
+                        className="form-control"
+                        placeholder="Insert Your Email">
+
+                    </input>
+
+                    <input 
+                        onChange={ handleChange }
+                        type="password" 
+                        className="form-control"
+                        placeholder="Insert Your Password">
+
+                    </input>
+                </div>
+
+                <div>
+                    <button className="btn btn-primary">
+                        Register! 
+                    </button>
                 </div>
             </form>
         )
