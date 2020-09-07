@@ -1,4 +1,4 @@
-const { useState } from "react"
+import { useState } from "react";
 
 
 const RegisterComponent = () => {
@@ -12,13 +12,16 @@ const RegisterComponent = () => {
         showForm: true
     })
 
+    const {name, email, password, error, loading, message, showForm} = values
+
     const handleSubmit = e => {
         e.preventDefault()
         console.log("Submit handled")
     }
 
-    const handleChange = e => {
-        console.log(e.target.value)
+    const handleChange = name = e => {
+        setValues({...values, error: false, [name]: e.target.value
+        });
     }
 
     const registerForm = () => {
@@ -26,7 +29,8 @@ const RegisterComponent = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <input 
-                        onChange={ handleChange }
+                        value={ name }
+                        onChange={ handleChange("name") }
                         type="text" 
                         className="form-control"
                         placeholder="Insert Your Name">
@@ -34,7 +38,8 @@ const RegisterComponent = () => {
                     </input>
 
                     <input 
-                        onChange={ handleChange }
+                        value={ email }
+                        onChange={ handleChange("email") }
                         type="email" 
                         className="form-control"
                         placeholder="Insert Your Email">
@@ -42,7 +47,8 @@ const RegisterComponent = () => {
                     </input>
 
                     <input 
-                        onChange={ handleChange }
+                        value={ password }
+                        onChange={ handleChange("password") }
                         type="password" 
                         className="form-control"
                         placeholder="Insert Your Password">
