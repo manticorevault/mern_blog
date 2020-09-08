@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { register } from "../../actions/auth";
+import { login } from "../../actions/auth";
+import Router from "next/router";
 
 
-const RegisterComponent = () => {
+const LoginComponent = () => {
     const [values, setValues] = useState({
-        name: "Artur",
         email: "artur@email.com",
         password: "123123",
         error: "",
@@ -13,28 +13,22 @@ const RegisterComponent = () => {
         showForm: true
     })
 
-    const {name, email, password, error, loading, message, showForm} = values
+    const { email, password, error, loading, message, showForm } = values
 
     const handleSubmit = e => {
         e.preventDefault();
 
         setValues({ ...values, loading: true, error: false });
-        const user = { name, email, password };
+        const user = { email, password };
 
-        register(user).then(data => {
+        login(user).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, loading: false });
             } else {
-                setValues({
-                    ...values,
-                    name: '',
-                    email: '',
-                    password: '',
-                    error: '',
-                    loading: false,
-                    message: data.message,
-                    showForm: false
-                });
+                // Save user token to cookie
+                // Save user info to localstorage
+                // Authenticate user
+                Router.push(`/`);
             }
         });
     };
@@ -56,18 +50,10 @@ const RegisterComponent = () => {
         message ? <div className="alert alert-info"> { message } </div> : ""
     );
 
-    const registerForm = () => {
+    const loginForm = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <input 
-                        value={ name }
-                        onChange={ handleChange("name") }
-                        type="text" 
-                        className="form-control"
-                        placeholder="Insert Your Name">
-
-                    </input>
 
                     <input 
                         value={ email }
@@ -90,7 +76,7 @@ const RegisterComponent = () => {
 
                 <div>
                     <button className="btn btn-primary">
-                        Register! 
+                        Login
                     </button>
                 </div>
             </form>
@@ -102,9 +88,9 @@ const RegisterComponent = () => {
             { showError () }
             { showLoading() }
             { showMessage() } 
-            { showForm && registerForm() }
+            { showForm && loginForm() }
         </React.Fragment>
     )
 }
 
-export default RegisterComponent;
+export default LoginComponent;
