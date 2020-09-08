@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { register } from "../../actions/auth";
 
 
 const RegisterComponent = () => {
@@ -16,13 +17,43 @@ const RegisterComponent = () => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log("Submit handled")
-    }
+        setValues({...values, loading: true, error: false})
+        const user = { name, email, password } 
 
-    const handleChange = name = e => {
+        register(user)
+            .then(data => {
+                if(data.error) {
+                    setValues({...values, error: data.error})
+                } else {
+                    setValues({...values, 
+                                name: "", 
+                                email: "", 
+                                password: "", 
+                                error: "", 
+                                loading: false, 
+                                message: data.message,
+                                showForm: false
+                            })
+                }
+            })
+    };
+
+    const handleChange = name => e => {
         setValues({...values, error: false, [name]: e.target.value
         });
     }
+
+    const showLoading = () => (
+        loading ? <div className="alert alert-info"> Loading </div> : ""
+    );
+
+    const showError = () => (
+        error ? <div className="alert alert-danger"> { error } </div> : ""
+    );
+
+    const showMessage = () => (
+        message ? <div className="alert alert-info"> { message } </div> : ""
+    );
 
     const registerForm = () => {
         return (
@@ -67,7 +98,10 @@ const RegisterComponent = () => {
 
     return (
         <React.Fragment>
-            { registerForm() }
+            { showError () }
+            { showLoading() }
+            { showMessage() } 
+            { showForm && registerForm() }
         </React.Fragment>
     )
 }
