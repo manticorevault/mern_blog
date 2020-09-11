@@ -3,9 +3,9 @@ import { register } from '../../actions/auth';
 
 const RegisterComponent = () => {
     const [values, setValues] = useState({
-        name: 'Artur',
-        email: 'artur@email.com',
-        password: '123123',
+        name: 'Ryan',
+        email: 'ryan@gmail.com',
+        password: 'rrrrrr',
         error: '',
         loading: false,
         message: '',

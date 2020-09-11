@@ -1,14 +1,14 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-// Import routes
-const blogRoutes = require("./routes/blog");
-const authRoutes = require("./routes/auth");
+// Bring routes
+const blogRoutes = require('./routes/blog');
+const authRoutes = require('./routes/auth');
 
 // App
 const app = express();
@@ -16,32 +16,27 @@ const app = express();
 // Database
 mongoose
     .connect(process.env.DATABASE_CLOUD, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
-    .then(() => console.log('Database Connected'))
+    .then(() => console.log('DB connected'))
     .catch(err => {
         console.log(err);
     });
 
-// Middleware
-app.use(morgan("dev"))
-app.use(bodyParser.json())
-app.use(cookieParser())
-
-// Routes Middleware
-app.use("/api", blogRoutes);
-app.use("/api", authRoutes);
-
-// CORS Middleware
-if(process.env.NODE_ENV === "development") {
-    app.use(cors( { origin: `${process.env.CLIENT_URL}` }));
+// Cors
+if (process.env.NODE_ENV === 'development') {
+    app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 }
 
-// Access routes
-app.get("/api", (req, res) => {
-    res.json({ time: Date().toString() })
-});
+// Middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
-// Access port
-const port = process.env.PORT || 8001
+// Routes Middleware
+app.use('/api', blogRoutes);
+app.use('/api', authRoutes);
+
+// Port
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-})
+    console.log(`Server is running on port ${port}`);
+});

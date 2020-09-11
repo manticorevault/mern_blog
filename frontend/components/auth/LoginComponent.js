@@ -4,8 +4,8 @@ import Router from 'next/router';
 
 const LoginComponent = () => {
     const [values, setValues] = useState({
-        email: 'artur@email.com',
-        password: '123123',
+        email: '',
+        password: "",
         error: '',
         loading: false,
         message: '',
@@ -30,7 +30,7 @@ const LoginComponent = () => {
                 authenticate(data, () => {
                     Router.push(`/`);
                 });
-            };
+            }; 
         });
     };
 

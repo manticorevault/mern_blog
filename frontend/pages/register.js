@@ -1,5 +1,4 @@
 import Layout from "../components/Layout";
-import Link from "next/link";
 import RegisterComponent from "../components/auth/RegisterComponent";
 
 const Register = () => {
