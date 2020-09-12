@@ -3,7 +3,7 @@ import cookie from 'js-cookie';
 import { API } from '../config';
 
 export const register = user => {
-    return fetch(`${API}/api/register`, {
+    return fetch(`${API}/register`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -18,7 +18,7 @@ export const register = user => {
 };
 
 export const login = user => {
-    return fetch(`${API}/api/login`, {
+    return fetch(`${API}/login`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -33,7 +33,17 @@ export const login = user => {
 };
 
 export const logout = (next) => {
-    
+    removeCookie("token") 
+    removeLocalStorage("user")
+    next()
+
+    return fetch (`${API}/logout`, {
+        method: "GET"
+    })
+    .then(response => {
+        console.log("Logged out successfully")
+    })
+    .catch(err => console.log(err))
 };
 
 // Set cookie
@@ -55,7 +65,7 @@ export const removeCookie = key => {
 // Get cookie
 export const getCookie = key => {
     if (process.browser) {
-        cookie.get(key);
+        return cookie.get(key);
     }
 };
 // Localstorage

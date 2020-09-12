@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { APP_NAME } from "../config";
+import { logout, isAuth } from "../actions/auth";
+import Router from "next/router";
 import {
   Collapse,
   Navbar,
@@ -16,6 +18,7 @@ import {
   NavbarText
 } from 'reactstrap';
 
+
 const Header = () => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -27,28 +30,42 @@ const Header = () => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <Link href="/"> 
+        <Link href="/">
           <NavLink className="font-weight-bold">
-            { APP_NAME }
+            {APP_NAME}
           </NavLink>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-          <NavItem>
-              <Link href="/login">
-                <NavLink>
-                  Login
+            {!isAuth() && <React.Fragment>
+              <NavItem>
+                <Link href="/login">
+                  <NavLink>
+                    Login
                 </NavLink>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/register">
-                <NavLink>
-                  Register
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link href="/register">
+                  <NavLink>
+                    Register
                 </NavLink>
-              </Link>
-            </NavItem>
+                </Link>
+              </NavItem>
+
+            </React.Fragment>}
+
+            {isAuth() && (
+              <NavItem>
+                <NavLink
+                  onClick={() => logout(() => Router.replace("/login"))}
+                  style={{ cursor: "pointer" }}
+                >
+                  Logout
+                </NavLink>
+              </NavItem>
+            )}
           </Nav>
         </Collapse>
       </Navbar>
