@@ -32,7 +32,7 @@ const Header = () => {
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink className="font-weight-bold">
-            {APP_NAME}
+            { APP_NAME }
           </NavLink>
         </Link>
         <NavbarToggler onClick={toggle} />
