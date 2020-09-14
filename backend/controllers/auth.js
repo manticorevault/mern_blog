@@ -36,7 +36,7 @@ exports.login = (req, res) => {
     User.findOne({ email }).exec((err, user) => {
         if(err || !user) {
             return res.status(400).json({
-                error: "This e-mail is not related to any user. Please, sing up!"
+                error: "This e-mail is not related to any user. Please, register to access the platform!"
             });
         };
 
@@ -72,3 +72,35 @@ exports.requireLogin = expressJWT({
     userProperty: "auth",
 });
 
+exports.authMiddleware = (req, res, next) => {
+    const authUserId = req.user._id;
+    User.findById({ _id: authUserId }).exec((err, user) => {
+        if (err || !user) {
+            return res.status(400).json({
+                error: 'User not found'
+            });
+        }
+        req.profile = user;
+        next();
+    });
+};
+
+exports.adminMiddleware = (req, res, next) => {
+    const adminUserId = req.user._id;
+    User.findById({ _id: adminUserId }).exec((err, user) => {
+        if (err || !user) {
+            return res.status(400).json({
+                error: 'User not found'
+            });
+        }
+
+        if (user.role !== 1) {
+            return res.status(400).json({
+                error: 'This is an Admin-only page. Your access has been denied'
+            });
+        }
+
+        req.profile = user;
+        next();
+    });
+};

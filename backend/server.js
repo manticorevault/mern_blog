@@ -6,9 +6,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Bring routes
+// Bring in the routes
 const blogRoutes = require('./routes/blog');
 const authRoutes = require('./routes/auth');
+const userRoutes = require("./routes/user");
 
 // App
 const app = express();
@@ -34,6 +35,7 @@ app.use(cookieParser());
 // Routes Middleware
 app.use('/api', blogRoutes);
 app.use('/api', authRoutes);
+app.use("/api", userRoutes);
 
 // Port
 const port = process.env.PORT || 8000;
