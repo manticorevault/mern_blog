@@ -32,7 +32,7 @@ const Header = () => {
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink className="font-weight-bold">
-            { APP_NAME }
+            {APP_NAME}
           </NavLink>
         </Link>
         <NavbarToggler onClick={toggle} />
@@ -56,6 +56,27 @@ const Header = () => {
 
             </React.Fragment>}
 
+            {isAuth() && isAuth().role === 0 && (
+              <NavItem>
+                <NavLink>
+                  <Link href="/user">
+                    {`${isAuth().name}'s Dashboard`}
+                  </Link>
+                </NavLink>
+              </NavItem>
+            )}
+
+
+            {isAuth() && isAuth().role === 1 && (
+              <NavItem>
+                <NavLink>
+                  <Link href="/admin">
+                    {`${isAuth().name}'s Dashboard`}
+                  </Link>
+                </NavLink>
+              </NavItem>
+            )}
+
             {isAuth() && (
               <NavItem>
                 <NavLink
@@ -66,6 +87,7 @@ const Header = () => {
                 </NavLink>
               </NavItem>
             )}
+
           </Nav>
         </Collapse>
       </Navbar>
