@@ -32,7 +32,11 @@ const LoginComponent = () => {
                 // Save user info to localstorage
                 // Authenticate user
                 authenticate(data, () => {
-                    Router.push(`/`);
+                    if(isAuth() && isAuth().role === 1) {
+                        Router.push("/admin");
+                    } else {
+                        Router.push("/user");
+                    }
                 });
             }; 
         });
