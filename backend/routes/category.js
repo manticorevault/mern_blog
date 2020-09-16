@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { create, list, read, remove } = require("../controllers/category");
+const { requireLogin, adminMiddleware } = require("../controllers/auth");
 
 // Bring in the validators
 const { runValidation } = require("../validators");
-const { requireLogin, adminMiddleware } = require("../controllers/auth");
 const { categoryCreateValidator } = require("../validators/category");
 
 router.post("/category", 
@@ -12,12 +12,9 @@ router.post("/category",
             runValidation, 
             requireLogin, 
             adminMiddleware,
-            create
-        );
-
+            create)
 router.get("/categories", list)
 router.get("/category/:slug", read)
 router.delete("/category/:slug", requireLogin, adminMiddleware, remove)
-
 
 module.exports = router;
