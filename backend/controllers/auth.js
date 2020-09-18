@@ -96,7 +96,7 @@ exports.adminMiddleware = (req, res, next) => {
 
         if (user.role !== 1) {
             return res.status(400).json({
-                error: 'This is an Admin-only page. Your access has been denied'
+                error: 'You are not allowed in this page'
             });
         }
 

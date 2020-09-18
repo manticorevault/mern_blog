@@ -1,7 +1,6 @@
 import Layout from "../../../components/Layout";
 import Admin from "../../../components/auth/Admin";
 import Category from "../../../components/manage/Category";
-import Link from "next/link";
 
 const CategoryTag = () => {
     return (
