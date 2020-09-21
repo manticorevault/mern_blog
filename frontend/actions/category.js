@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 
 export const create = (category, token) => {
-    return fetch(`${API}/category`, {
+    return fetch("http://localhost:8000/api/category", {
         method: 'POST',
         headers: {
             Accept: 'application/json',

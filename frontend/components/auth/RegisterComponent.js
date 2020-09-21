@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { register, isAuth } from '../../actions/auth';
-import Router from "next/router";
+import Router from 'next/router';
 
 const RegisterComponent = () => {
     const [values, setValues] = useState({
-        name: 'Artyr',
-        email: 'artur@gmail.com',
-        password: '123123',
+        name: 'Ryan',
+        email: 'ryan@gmail.com',
+        password: 'rrrrrr',
         error: '',
         loading: false,
         message: '',
@@ -16,7 +16,7 @@ const RegisterComponent = () => {
     const { name, email, password, error, loading, message, showForm } = values;
 
     useEffect(() => {
-        isAuth() && Router.push("/");
+        isAuth() && Router.push(`/`);
     }, []);
 
     const handleSubmit = e => {
@@ -85,7 +85,7 @@ const RegisterComponent = () => {
                 </div>
 
                 <div>
-                    <button className="btn btn-primary">Register</button>
+                    <button className="btn btn-primary">register</button>
                 </div>
             </form>
         );

@@ -16,6 +16,13 @@ const tagRoutes = require('./routes/tag');
 // App
 const app = express();
 
+// Cors
+if (process.env.NODE_ENV === 'development') {   
+    app.use(cors({
+        origin: `${process.env.CLIENT_URL}`
+    }));
+} 
+
 // Database
 mongoose
     .connect(process.env.DATABASE_CLOUD, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
@@ -23,11 +30,6 @@ mongoose
     .catch(err => {
         console.log(err);
     });
-
-// Cors
-if (process.env.NODE_ENV === 'development') {
-    app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
-}
 
 // Middlewares
 app.use(morgan('dev'));

@@ -10,11 +10,9 @@ export const register = user => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+    }).then(response => {
+        return response.json();
+    }).catch(err => console.log(err));
 };
 
 export const login = user => {
@@ -33,17 +31,17 @@ export const login = user => {
 };
 
 export const logout = (next) => {
-    removeCookie("token") 
+    removeCookie("token")
     removeLocalStorage("user")
     next()
 
-    return fetch (`${API}/logout`, {
+    return fetch(`${API}/logout`, {
         method: "GET"
     })
-    .then(response => {
-        console.log("Logged out successfully")
-    })
-    .catch(err => console.log(err))
+        .then(response => {
+            console.log("Logged out successfully")
+        })
+        .catch(err => console.log(err))
 };
 
 // Set cookie
