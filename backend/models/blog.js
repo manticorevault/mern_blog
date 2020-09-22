@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const postSchema = new mongoose.Schema (
+const blogSchema = new mongoose.Schema (
     {
         title: {
             type: String,
@@ -45,4 +45,4 @@ const postSchema = new mongoose.Schema (
     { timestamp: true }
 );
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Blog", blogSchema);
