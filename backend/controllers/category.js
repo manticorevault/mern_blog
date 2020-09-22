@@ -46,17 +46,16 @@ exports.read = (req, res) => {
 };
 
 exports.remove = (req, res) => {
-    const slug = req.params.slug.toLowerCase()
+    const slug = req.params.slug.toLowerCase();
 
     Category.findOneAndRemove({ slug }).exec((err, data) => {
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 error: errorHandler(err)
             });
         }
-
-        err.json({
-            message: "Category was successfully deleted"
+        res.json({
+            message: 'Category was successfully deleted'
         });
     });
 };
