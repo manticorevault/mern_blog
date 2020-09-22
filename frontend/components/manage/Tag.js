@@ -2,45 +2,44 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { getCookie } from '../../actions/auth';
-import { create, getCategories, removeCategory } from '../../actions/category';
-import { set } from 'js-cookie';
+import { create, getTags, removeTag } from '../../actions/tag';
 
-const Category = () => {
+const Tag = () => {
     const [values, setValues] = useState({
         name: '',
         error: false,
         success: false,
-        categories: [],
+        tags: [],
         removed: false,
         reload: false
     });
 
-    const { name, error, success, categories, removed, reload } = values;
+    const { name, error, success, tags, removed, reload } = values;
     const token = getCookie('token');
 
     useEffect(() => {
-        loadCategories()
-    }, [reload]);
+        loadTags();
+    }, [success, removed]);
 
-    const loadCategories = () => {
-        getCategories().then(data => {
+    const loadTags = () => {
+        getTags().then(data => {
             if (data.error) {
                 console.log(data.error)
             } else {
-                setValues({ ...values, categories: data });
+                setValues({ ...values, tags: data });
             }
         });
     };
 
-    const showCategories = () => {
-        return categories.map((categories, index) => {
+    const showTags = () => {
+        return tags.map((tags, index) => {
             return (
-                <button onDoubleClick={() => deleteConfirmation(categories.slug)}
+                <button onDoubleClick={() => deleteConfirmation(tags.slug)}
                     title="Double click to delete"
-                    key={index}
+                    key={ index }
                     className="btn btn-outline-primary mr-1 ml-1 mt-3">
 
-                    { categories.name}
+                    { tags.name}
 
                 </button>
             );
@@ -48,15 +47,15 @@ const Category = () => {
     };
 
     const deleteConfirmation = slug => {
-        let answer = window.confirm("Are you sure you want to delete this category?")
+        let answer = window.confirm("Are you sure you want to delete this tag?")
 
         if (answer) {
-            deleteCategory(slug)
+            deleteTag(slug)
         }
     };
 
-    const deleteCategory = slug => {
-        removeCategory(slug, token).then(data => {
+    const deleteTag = slug => {
+        removeTag(slug, token).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -87,19 +86,19 @@ const Category = () => {
 
     const showSuccess = () => {
         if (success) {
-            return <p className="text-success">Category is created!</p>;
+            return <p className="text-success">Tag is created!</p>;
         }
     };
 
     const showError = () => {
         if (error) {
-            return <p className="text-danger">This category already exists </p>;
+            return <p className="text-danger">This tag already exists </p>;
         }
     };
 
     const showRemoved = () => {
         if (removed) {
-            return <p className="text-danger">This category was successfully removed!</p>;
+            return <p className="text-danger">This tag was successfully removed!</p>;
         }
     };
 
@@ -107,10 +106,10 @@ const Category = () => {
         setValues({ ...values, error: false, success: false, removed: '' });
     };
 
-    const newCategoryForm = () => (
+    const newTagForm = () => (
         <form onSubmit={clickSubmit}>
             <div className="form-group">
-                <label className="text-muted">Category Name</label>
+                <label className="text-muted">Tag Name</label>
                 <input type="text" className="form-control" onChange={handleChange} value={name} required />
             </div>
             <div>
@@ -127,11 +126,11 @@ const Category = () => {
             { showError() }
             { showRemoved() }
             <div onMouseMove={mouseMoveHandler}>
-                { newCategoryForm() }
-                { showCategories() }
+                { newTagForm() }
+                { showTags() }
             </div>
         </React.Fragment>
     );
 };
 
-export default Category;
+export default Tag;

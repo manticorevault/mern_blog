@@ -1,6 +1,7 @@
 import Layout from "../../../components/Layout";
 import Admin from "../../../components/auth/Admin";
 import Category from "../../../components/manage/Category";
+import Tag from "../../../components/manage/Tag";
 
 const CategoryTag = () => {
     return (
@@ -15,7 +16,7 @@ const CategoryTag = () => {
                             <Category />
                         </div>
                         <div className="col-md-6">
-                            <p> Tag </p>
+                            <Tag />
                         </div>
                     </div>
                 </div>
