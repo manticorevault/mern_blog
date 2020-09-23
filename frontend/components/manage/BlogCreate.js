@@ -13,10 +13,63 @@ import "../../node_modules/react-quill/dist/quill.snow.css";
 
 
 const CreateBlog = ({ router }) => {
+
+    const [body, setBody] = useState({  })
+    const [values, setValues] = useState({
+        error: "",
+        sizeError: "",
+        success: "",
+        formData: "",
+        title: "",
+        hidePublishButton: false
+    });
+
+    const { error, sizeError, success, formData, title, hidePublishButton } = values
+
+    const publishBlog = (e) => {
+        e.preventDefault()
+        console.log("Ready to be published")
+    }
+
+    const handleChange = name => e => {
+        console.log(e.target.value);
+    }
+
+    const handleBody = e => {
+        console.log(e)
+    }
+
+    const createBlogForm = () => {
+        return (
+            <form onSubmit={ publishBlog }>
+                <div className="form-group">
+                    <label className="text-muted">Title</label>
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        value={ title }
+                        onChange={ handleChange("title") }
+                    />
+                </div>
+
+                <div className="form-group">
+                    <ReactQuill 
+                        value={ body } 
+                        placeholder="Escreva seu post!"
+                        onChange={ handleBody }
+                    />
+                </div>
+
+                <div>
+                    <button type="submit" className="btn btn-primary"> Publish </button>
+                </div>
+            </form>
+        )
+    }
+
     return (
         <div>
-            <h2> Create a new post! </h2>
-            { JSON.stringify(router) }
+            { createBlogForm() }
         </div>
     );
 };
