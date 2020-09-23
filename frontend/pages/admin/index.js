@@ -26,6 +26,13 @@ const AdminIndex = () => {
                                     </Link>
                                 </li>
 
+
+                                <li className="list-group-item">
+                                    <Link href="/admin/manage/blog">
+                                        <a>Write a post!</a>
+                                    </Link>
+                                </li>
+
                             </ul>
                         </div>
                         <div className="col-md-8">right</div>
