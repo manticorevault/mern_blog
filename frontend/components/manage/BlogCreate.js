@@ -14,7 +14,19 @@ import "../../node_modules/react-quill/dist/quill.snow.css";
 
 const CreateBlog = ({ router }) => {
 
-    const [body, setBody] = useState({  })
+    const blogFromLocalStorage = () => {
+        if (typeof window === "undefined") {
+            return false
+        }
+
+        if (localStorage.getItem("blog")) {
+            return JSON.parse(localStorage.getItem("blog"))
+        } else {
+            return false; 
+        }
+    }
+
+    const [body, setBody] = useState(blogFromLocalStorage());
     const [values, setValues] = useState({
         error: "",
         sizeError: "",
@@ -26,18 +38,28 @@ const CreateBlog = ({ router }) => {
 
     const { error, sizeError, success, formData, title, hidePublishButton } = values
 
+    useEffect(() => {
+        setValues({ ...values, formData: new FormData() })
+    }, [router]);
+
     const publishBlog = (e) => {
         e.preventDefault()
         console.log("Ready to be published")
     }
 
     const handleChange = name => e => {
-        console.log(e.target.value);
-    }
+        const value = name === "photo" ? e.target.files[0] : e.target.value
+        formData.set(name, value)
+        setValues({ ...values, [name]: value, formData, error: "" })
+    };
 
-    const handleBody = e => {
-        console.log(e)
-    }
+    const handleBody = e => {  
+        setBody(e)
+        formData.set("body", e)
+        if (typeof window !== "undefined") {
+            localStorage.setItem("blog", JSON.stringify(e))
+        }
+    };
 
     const createBlogForm = () => {
         return (
@@ -53,7 +75,9 @@ const CreateBlog = ({ router }) => {
                 </div>
 
                 <div className="form-group">
-                    <ReactQuill 
+                    <ReactQuill
+                        modules={ CreateBlog.modules }
+                        formats={ CreateBlog.formats } 
                         value={ body } 
                         placeholder="Escreva seu post!"
                         onChange={ handleBody }
@@ -73,5 +97,34 @@ const CreateBlog = ({ router }) => {
         </div>
     );
 };
+
+CreateBlog.modules = {
+    toolbar: [
+        [{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
+        [{ size: [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image', 'video'],
+        ['clean'],
+        ['code-block']
+    ]
+};
+ 
+CreateBlog.formats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'link',
+    'image',
+    'video',
+    'code-block'
+];
 
 export default withRouter(CreateBlog);

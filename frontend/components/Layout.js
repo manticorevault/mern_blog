@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
             </p>
             { children }
             <p>
-                Footer
+                Footer - Add the https://www.buymeacoffee.com/
             </p>
         </React.Fragment>
     )
