@@ -43,6 +43,7 @@ const CreateBlog = ({ router }) => {
     });
 
     const { error, sizeError, success, formData, title, hidePublishButton } = values
+    const token = getCookie("token");
 
     useEffect(() => {
         setValues({ ...values, formData: new FormData() });
@@ -70,10 +71,19 @@ const CreateBlog = ({ router }) => {
         })
     }
 
-    const publishBlog = (e) => {
-        e.preventDefault()
-        console.log("Ready to be published")
-    }
+    const publishBlog = e => {
+        e.preventDefault();
+        createBlog(formData, token).then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error });
+            } else {
+                setValues({ ...values, title: '', error: '', success: `Your post "${data.title}" was successfully created!` });
+                setBody('');
+                setCategories([]);
+                setTags([]);
+            }
+        });
+    };
 
     const handleChange = name => e => {
         const value = name === "photo" ? e.target.files[0] : e.target.value
@@ -100,7 +110,6 @@ const CreateBlog = ({ router }) => {
             all.splice(clickedCategory, 1)
         }
 
-        console.log(all)
         setCheckedCategory(all)
         formData.set("categories", all);
     }
@@ -116,7 +125,6 @@ const CreateBlog = ({ router }) => {
             all.splice(clickedTag, 1)
         }
 
-        console.log(all)
         setCheckedTag(all)
         formData.set("tags", all);
     }
