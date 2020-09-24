@@ -22,9 +22,12 @@ const CreateBlog = ({ router }) => {
         if (localStorage.getItem("blog")) {
             return JSON.parse(localStorage.getItem("blog"))
         } else {
-            return false; 
+            return false;
         }
-    }
+    };
+
+    const [categories, setCategories] = useState([])
+    const [tags, setTags] = useState([])
 
     const [body, setBody] = useState(blogFromLocalStorage());
     const [values, setValues] = useState({
@@ -39,8 +42,30 @@ const CreateBlog = ({ router }) => {
     const { error, sizeError, success, formData, title, hidePublishButton } = values
 
     useEffect(() => {
-        setValues({ ...values, formData: new FormData() })
+        setValues({ ...values, formData: new FormData() });
+        initCategories()
+        initTags()
     }, [router]);
+
+    const initCategories = () => {
+        getCategories().then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error })
+            } else {
+                setCategories(data)
+            }
+        })
+    }
+
+    const initTags = () => {
+        getTags().then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error })
+            } else {
+                setTags(data);
+            }
+        })
+    }
 
     const publishBlog = (e) => {
         e.preventDefault()
@@ -53,7 +78,7 @@ const CreateBlog = ({ router }) => {
         setValues({ ...values, [name]: value, formData, error: "" })
     };
 
-    const handleBody = e => {  
+    const handleBody = e => {
         setBody(e)
         formData.set("body", e)
         if (typeof window !== "undefined") {
@@ -61,26 +86,50 @@ const CreateBlog = ({ router }) => {
         }
     };
 
+    const showCategories = () => {
+        return (
+            categories && categories.map((category, index) => (
+                <li key={index} className="list-unstyled">
+                    <input type="checkbox" className="mr-2" />
+                    <label className="form-check-label"> {category.name} </label>
+                </li>
+            ))
+        )
+    }
+
+
+    const showTags = () => {
+        return (
+            tags && tags.map((tag, index) => (
+                <li key={index} className="list-unstyled">
+                    <input type="checkbox" className="mr-2" />
+                    <label className="form-check-label"> {tag.name} </label>
+                </li>
+            ))
+        )
+    }
+
+
     const createBlogForm = () => {
         return (
-            <form onSubmit={ publishBlog }>
+            <form onSubmit={publishBlog}>
                 <div className="form-group">
                     <label className="text-muted">Title</label>
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        value={ title }
-                        onChange={ handleChange("title") }
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={title}
+                        onChange={handleChange("title")}
                     />
                 </div>
 
                 <div className="form-group">
                     <ReactQuill
-                        modules={ CreateBlog.modules }
-                        formats={ CreateBlog.formats } 
-                        value={ body } 
+                        modules={CreateBlog.modules}
+                        formats={CreateBlog.formats}
+                        value={body}
                         placeholder="Escreva seu post!"
-                        onChange={ handleBody }
+                        onChange={handleBody}
                     />
                 </div>
 
@@ -92,8 +141,40 @@ const CreateBlog = ({ router }) => {
     }
 
     return (
-        <div>
-            { createBlogForm() }
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-md-8">
+                    {createBlogForm()}
+                    <hr />
+                    {JSON.stringify(title)}
+                    <hr />
+                    {JSON.stringify(body)}
+                    <hr />
+                    {JSON.stringify(categories)}
+                    <hr />
+                    {JSON.stringify(tags)}
+                </div>
+
+                <div className="col-md-4">
+
+                    <div>
+                        <h5> Categories </h5>
+                        <hr />
+                        <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
+                            { showCategories() }
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h5> Tags </h5>
+                        <hr />
+                        <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
+                            { showTags() }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 };
@@ -109,7 +190,7 @@ CreateBlog.modules = {
         ['code-block']
     ]
 };
- 
+
 CreateBlog.formats = [
     'header',
     'font',
