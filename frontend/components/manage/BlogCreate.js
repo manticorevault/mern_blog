@@ -192,16 +192,21 @@ const CreateBlog = ({ router }) => {
                 <div className="col-md-8">
                     {createBlogForm()}
                     <hr />
-                    {JSON.stringify(title)}
-                    <hr />
-                    {JSON.stringify(body)}
-                    <hr />
-                    {JSON.stringify(categories)}
-                    <hr />
-                    {JSON.stringify(tags)}
                 </div>
 
                 <div className="col-md-4">
+                    <div>
+                    <div className="form-group pb-2">
+                            <h5>Cover Picture</h5>
+
+                            <small className="text-muted">Max Size: 5MB</small>
+                            <hr />
+                            <label className="btn btn-outline-info">
+                                Upload
+                                <input onChange={handleChange('photo')} type="file" accept="image/*" hidden />
+                            </label>
+                        </div>
+                    </div>
 
                     <div>
                         <h5> Categories </h5>
