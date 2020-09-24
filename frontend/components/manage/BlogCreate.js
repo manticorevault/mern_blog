@@ -29,6 +29,9 @@ const CreateBlog = ({ router }) => {
     const [categories, setCategories] = useState([])
     const [tags, setTags] = useState([])
 
+    const [checkedCategory, setCheckedCategory] = useState([]);
+    const [checkedTag, setCheckedTag] = useState([]);
+
     const [body, setBody] = useState(blogFromLocalStorage());
     const [values, setValues] = useState({
         error: "",
@@ -86,12 +89,51 @@ const CreateBlog = ({ router }) => {
         }
     };
 
+    const handleToggleCat = (category) => () => {
+        setValues({ ...values, error: "" })
+        const clickedCategory = checkedCategory.indexOf(category)
+        const all = [...checkedCategory]
+
+        if (clickedCategory === -1) {
+            all.push(category)
+        } else {
+            all.splice(clickedCategory, 1)
+        }
+
+        console.log(all)
+        setCheckedCategory(all)
+        formData.set("categories", all);
+    }
+
+    const handleToggleTag = (tag) => () => {
+        setValues({ ...values, error: "" })
+        const clickedTag = checkedTag.indexOf(tag)
+        const all = [...checkedTag]
+
+        if (clickedTag === -1) {
+            all.push(tag)
+        } else {
+            all.splice(clickedTag, 1)
+        }
+
+        console.log(all)
+        setCheckedTag(all)
+        formData.set("tags", all);
+    }
+
     const showCategories = () => {
         return (
             categories && categories.map((category, index) => (
                 <li key={index} className="list-unstyled">
-                    <input type="checkbox" className="mr-2" />
-                    <label className="form-check-label"> {category.name} </label>
+                    <input
+                        onChange={ handleToggleCat(category._id) }
+                        type="checkbox"
+                        className="mr-2" />
+                    <label
+                        className="form-check-label"
+                    >
+                        {category.name}
+                    </label>
                 </li>
             ))
         )
@@ -102,8 +144,12 @@ const CreateBlog = ({ router }) => {
         return (
             tags && tags.map((tag, index) => (
                 <li key={index} className="list-unstyled">
-                    <input type="checkbox" className="mr-2" />
-                    <label className="form-check-label"> {tag.name} </label>
+                    <input
+                        onChange={ handleToggleTag(tag._id) }
+                        type="checkbox"
+                        className="mr-2" />
+                    <label
+                        className="form-check-label"> {tag.name} </label>
                 </li>
             ))
         )
@@ -161,7 +207,7 @@ const CreateBlog = ({ router }) => {
                         <h5> Categories </h5>
                         <hr />
                         <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
-                            { showCategories() }
+                            {showCategories()}
                         </ul>
                     </div>
 
@@ -169,7 +215,7 @@ const CreateBlog = ({ router }) => {
                         <h5> Tags </h5>
                         <hr />
                         <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
-                            { showTags() }
+                            {showTags()}
                         </ul>
                     </div>
 
