@@ -1,14 +1,13 @@
-import fetch from "isomorphic-fetch";
-import { API } from "../config";
+import fetch from 'isomorphic-fetch';
+import { API } from '../config';
 
-export const createBlog = (blog, token)  => {
+export const createBlog = (blog, token) => {
     return fetch(`${API}/blog`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            Accept: "application/json",
+            Accept: 'application/json',
             Authorization: `Bearer ${token}`
         },
-
         body: blog
     })
         .then(response => {

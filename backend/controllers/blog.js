@@ -12,12 +12,12 @@ const { smartTrim } = require("../helpers/blog");
 
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm()
-    form.keepExtensions = true
+    form.keepExtensions = true;
     form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
                 error: "The post couldn't upload the image"
-            })
+            });
         }
 
         const { title, body, categories, tags } = fields
@@ -46,12 +46,12 @@ exports.create = (req, res) => {
             });
         }
 
-        let blog = new Blog()
-        blog.title = title
-        blog.body = body
-        blog.excerpt = smartTrim(body, 320, " ", "...");    
+        let blog = new Blog();
+        blog.title = title;
+        blog.body = body;
+        blog.excerpt = smartTrim(body, 320, ' ', ' ...');
         blog.slug = slugify(title).toLowerCase();
-        blog.mtitle = `${title} | ${process.env.APP_NAME}`
+        blog.mtitle = `${title} | ${process.env.APP_NAME}`;
         blog.mdesc = stripHtml(body.substring(0, 160));
         blog.postedBy = req.auth._id // If it breaks, try: req.user._id
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const blogSchema = new mongoose.Schema (
+const blogSchema = new mongoose.Schema(
     {
         title: {
             type: String,
@@ -11,7 +11,7 @@ const blogSchema = new mongoose.Schema (
             required: true
         },
         slug: {
-            type: String, 
+            type: String,
             unique: true,
             index: true
         },
@@ -27,7 +27,7 @@ const blogSchema = new mongoose.Schema (
         },
         mtitle: {
             type: String
-        }, 
+        },
         mdesc: {
             type: String
         },
@@ -36,7 +36,7 @@ const blogSchema = new mongoose.Schema (
             contentType: String
         },
         categories: [{ type: ObjectId, ref: "Category", required: true }],
-        tags: [{ type: ObjectId, ref: "Tag", required: true}],
+        tags: [{ type: ObjectId, ref: "Tag", required: true }],
         postedBy: {
             type: ObjectId,
             ref: "User"

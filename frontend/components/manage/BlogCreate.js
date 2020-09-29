@@ -134,7 +134,7 @@ const CreateBlog = ({ router }) => {
             categories && categories.map((category, index) => (
                 <li key={index} className="list-unstyled">
                     <input
-                        onChange={ handleToggleCat(category._id) }
+                        onChange={handleToggleCat(category._id)}
                         type="checkbox"
                         className="mr-2" />
                     <label
@@ -153,7 +153,7 @@ const CreateBlog = ({ router }) => {
             tags && tags.map((tag, index) => (
                 <li key={index} className="list-unstyled">
                     <input
-                        onChange={ handleToggleTag(tag._id) }
+                        onChange={handleToggleTag(tag._id)}
                         type="checkbox"
                         className="mr-2" />
                     <label
@@ -204,7 +204,7 @@ const CreateBlog = ({ router }) => {
 
                 <div className="col-md-4">
                     <div>
-                    <div className="form-group pb-2">
+                        <div className="form-group pb-2">
                             <h5>Cover Picture</h5>
 
                             <small className="text-muted">Max Size: 5MB</small>
