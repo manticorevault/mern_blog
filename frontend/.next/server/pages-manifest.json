@@ -2,9 +2,6 @@
   "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/": "pages/index.js",
-  "/login": "pages/login.js",
-  "/admin": "pages/admin.js",
   "/admin/manage/blog": "pages/admin/manage/blog.js",
-  "/admin/manage/category-tag": "pages/admin/manage/category-tag.js"
+  "/login": "pages/login.js"
 }
