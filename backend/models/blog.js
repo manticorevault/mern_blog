@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const blogSchema = new mongoose.Schema(
@@ -6,7 +6,7 @@ const blogSchema = new mongoose.Schema(
         title: {
             type: String,
             trim: true,
-            min: 2,
+            min: 3,
             max: 160,
             required: true
         },
@@ -28,21 +28,18 @@ const blogSchema = new mongoose.Schema(
         mtitle: {
             type: String
         },
-        mdesc: {
-            type: String
-        },
         photo: {
             data: Buffer,
             contentType: String
         },
-        categories: [{ type: ObjectId, ref: "Category", required: true }],
-        tags: [{ type: ObjectId, ref: "Tag", required: true }],
+        categories: [{ type: ObjectId, ref: 'Category', required: true }],
+        tags: [{ type: ObjectId, ref: 'Tag', required: true }],
         postedBy: {
             type: ObjectId,
-            ref: "User"
+            ref: 'User'
         }
     },
-    { timestamp: true }
+    { timestamps: true }
 );
 
-module.exports = mongoose.model("Blog", blogSchema);
+module.exports = mongoose.model('Blog', blogSchema);

@@ -1,83 +1,81 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import Router from "next/router";
-import { withRouter } from "next/router";
-import dynamic from "next/dynamic";
-import { getCookie, isAuth } from "../../actions/auth"
-import { getCategories } from "../../actions/category";
-import { getTags } from "../../actions/tag";
-import { createBlog } from "../../actions/blog";
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false })
-import "../../node_modules/react-quill/dist/quill.snow.css";
-
-
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import Router from 'next/router';
+import dynamic from 'next/dynamic';
+import { withRouter } from 'next/router';
+import { getCookie, isAuth } from '../../actions/auth';
+import { getCategories } from '../../actions/category';
+import { getTags } from '../../actions/tag';
+import { createBlog } from '../../actions/blog';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import '../../node_modules/react-quill/dist/quill.snow.css';
 
 const CreateBlog = ({ router }) => {
-
-    const blogFromLocalStorage = () => {
-        if (typeof window === "undefined") {
-            return false
+    const blogFromLS = () => {
+        if (typeof window === 'undefined') {
+            return false;
         }
 
-        if (localStorage.getItem("blog")) {
-            return JSON.parse(localStorage.getItem("blog"))
+        if (localStorage.getItem('blog')) {
+            return JSON.parse(localStorage.getItem('blog'));
         } else {
             return false;
         }
     };
 
-    const [categories, setCategories] = useState([])
-    const [tags, setTags] = useState([])
+    const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
 
-    const [checkedCategory, setCheckedCategory] = useState([]);
-    const [checkedTag, setCheckedTag] = useState([]);
+    const [checked, setChecked] = useState([]); // categories
+    const [checkedTag, setCheckedTag] = useState([]); // tags
 
-    const [body, setBody] = useState(blogFromLocalStorage());
+    const [body, setBody] = useState(blogFromLS());
     const [values, setValues] = useState({
-        error: "",
-        sizeError: "",
-        success: "",
-        formData: "",
-        title: "",
+        error: '',
+        sizeError: '',
+        success: '',
+        formData: '',
+        title: '',
         hidePublishButton: false
     });
 
-    const { error, sizeError, success, formData, title, hidePublishButton } = values
-    const token = getCookie("token");
+    const { error, sizeError, success, formData, title, hidePublishButton } = values;
+    const token = getCookie('token');
 
     useEffect(() => {
         setValues({ ...values, formData: new FormData() });
-        initCategories()
-        initTags()
+        initCategories();
+        initTags();
     }, [router]);
 
     const initCategories = () => {
         getCategories().then(data => {
             if (data.error) {
-                setValues({ ...values, error: data.error })
+                setValues({ ...values, error: data.error });
             } else {
-                setCategories(data)
+                setCategories(data);
             }
-        })
-    }
+        });
+    };
 
     const initTags = () => {
         getTags().then(data => {
             if (data.error) {
-                setValues({ ...values, error: data.error })
+                setValues({ ...values, error: data.error });
             } else {
                 setTags(data);
             }
-        })
-    }
+        });
+    };
 
     const publishBlog = e => {
         e.preventDefault();
+        // console.log('ready to publishBlog');
         createBlog(formData, token).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setValues({ ...values, title: '', error: '', success: `Your post "${data.title}" was successfully created!` });
+                setValues({ ...values, title: '', error: '', success: `A new blog titled "${data.title}" is created` });
                 setBody('');
                 setCategories([]);
                 setTags([]);
@@ -86,95 +84,83 @@ const CreateBlog = ({ router }) => {
     };
 
     const handleChange = name => e => {
-        const value = name === "photo" ? e.target.files[0] : e.target.value
-        formData.set(name, value)
-        setValues({ ...values, [name]: value, formData, error: "" })
+        // console.log(e.target.value);
+        const value = name === 'photo' ? e.target.files[0] : e.target.value;
+        formData.set(name, value);
+        setValues({ ...values, [name]: value, formData, error: '' });
     };
 
     const handleBody = e => {
-        setBody(e)
-        formData.set("body", e)
-        if (typeof window !== "undefined") {
-            localStorage.setItem("blog", JSON.stringify(e))
+        // console.log(e);
+        setBody(e);
+        formData.set('body', e);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('blog', JSON.stringify(e));
         }
     };
 
-    const handleToggleCat = (category) => () => {
-        setValues({ ...values, error: "" })
-        const clickedCategory = checkedCategory.indexOf(category)
-        const all = [...checkedCategory]
+    const handleToggle = c => () => {
+        setValues({ ...values, error: '' });
+        // return the first index or -1
+        const clickedCategory = checked.indexOf(c);
+        const all = [...checked];
 
         if (clickedCategory === -1) {
-            all.push(category)
+            all.push(c);
         } else {
-            all.splice(clickedCategory, 1)
+            all.splice(clickedCategory, 1);
         }
+        console.log(all);
+        setChecked(all);
+        formData.set('categories', all);
+    };
 
-        setCheckedCategory(all)
-        formData.set("categories", all);
-    }
-
-    const handleToggleTag = (tag) => () => {
-        setValues({ ...values, error: "" })
-        const clickedTag = checkedTag.indexOf(tag)
-        const all = [...checkedTag]
+    const handleTagsToggle = t => () => {
+        setValues({ ...values, error: '' });
+        // return the first index or -1
+        const clickedTag = checked.indexOf(t);
+        const all = [...checkedTag];
 
         if (clickedTag === -1) {
-            all.push(tag)
+            all.push(t);
         } else {
-            all.splice(clickedTag, 1)
+            all.splice(clickedTag, 1);
         }
-
-        setCheckedTag(all)
-        formData.set("tags", all);
-    }
+        console.log(all);
+        setCheckedTag(all);
+        formData.set('tags', all);
+    };
 
     const showCategories = () => {
         return (
-            categories && categories.map((category, index) => (
-                <li key={index} className="list-unstyled">
-                    <input
-                        onChange={handleToggleCat(category._id)}
-                        type="checkbox"
-                        className="mr-2" />
-                    <label
-                        className="form-check-label"
-                    >
-                        {category.name}
-                    </label>
+            categories &&
+            categories.map((c, i) => (
+                <li key={i} className="list-unstyled">
+                    <input onChange={handleToggle(c._id)} type="checkbox" className="mr-2" />
+                    <label className="form-check-label">{c.name}</label>
                 </li>
             ))
-        )
-    }
-
+        );
+    };
 
     const showTags = () => {
         return (
-            tags && tags.map((tag, index) => (
-                <li key={index} className="list-unstyled">
-                    <input
-                        onChange={handleToggleTag(tag._id)}
-                        type="checkbox"
-                        className="mr-2" />
-                    <label
-                        className="form-check-label"> {tag.name} </label>
+            tags &&
+            tags.map((t, i) => (
+                <li key={i} className="list-unstyled">
+                    <input onChange={handleTagsToggle(t._id)} type="checkbox" className="mr-2" />
+                    <label className="form-check-label">{t.name}</label>
                 </li>
             ))
-        )
-    }
-
+        );
+    };
 
     const createBlogForm = () => {
         return (
             <form onSubmit={publishBlog}>
                 <div className="form-group">
                     <label className="text-muted">Title</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={title}
-                        onChange={handleChange("title")}
-                    />
+                    <input type="text" className="form-control" value={title} onChange={handleChange('title')} />
                 </div>
 
                 <div className="form-group">
@@ -182,17 +168,19 @@ const CreateBlog = ({ router }) => {
                         modules={CreateBlog.modules}
                         formats={CreateBlog.formats}
                         value={body}
-                        placeholder="Escreva seu post!"
+                        placeholder="Write something amazing..."
                         onChange={handleBody}
                     />
                 </div>
 
                 <div>
-                    <button type="submit" className="btn btn-primary"> Publish </button>
+                    <button type="submit" className="btn btn-primary">
+                        Publish
+                    </button>
                 </div>
             </form>
-        )
-    }
+        );
+    };
 
     return (
         <div className="container-fluid">
@@ -200,38 +188,39 @@ const CreateBlog = ({ router }) => {
                 <div className="col-md-8">
                     {createBlogForm()}
                     <hr />
+                    {JSON.stringify(title)}
+                    <hr />
+                    {JSON.stringify(body)}
+                    <hr />
+                    {JSON.stringify(categories)}
+                    <hr />
+                    {JSON.stringify(tags)}
                 </div>
 
                 <div className="col-md-4">
                     <div>
                         <div className="form-group pb-2">
-                            <h5>Cover Picture</h5>
-
-                            <small className="text-muted">Max Size: 5MB</small>
+                            <h5>Featured image</h5>
                             <hr />
+
+                            <small className="text-muted">Max size: 1mb</small>
                             <label className="btn btn-outline-info">
-                                Upload
+                                Upload featured image
                                 <input onChange={handleChange('photo')} type="file" accept="image/*" hidden />
                             </label>
                         </div>
                     </div>
-
                     <div>
-                        <h5> Categories </h5>
+                        <h5>Categories</h5>
                         <hr />
-                        <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
-                            {showCategories()}
-                        </ul>
-                    </div>
 
+                        <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>{showCategories()}</ul>
+                    </div>
                     <div>
-                        <h5> Tags </h5>
+                        <h5>Tags</h5>
                         <hr />
-                        <ul style={{ maxHeight: "200px", overflowY: "scroll" }}>
-                            {showTags()}
-                        </ul>
+                        <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>{showTags()}</ul>
                     </div>
-
                 </div>
             </div>
         </div>
