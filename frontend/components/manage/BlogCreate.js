@@ -75,7 +75,7 @@ const CreateBlog = ({ router }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setValues({ ...values, title: '', error: '', success: `A new blog titled "${data.title}" is created` });
+                setValues({ ...values, title: '', error: '', success: `Your post "${data.title}" was created` });
                 setBody('');
                 setCategories([]);
                 setTags([]);
@@ -168,7 +168,7 @@ const CreateBlog = ({ router }) => {
                         modules={CreateBlog.modules}
                         formats={CreateBlog.formats}
                         value={body}
-                        placeholder="Write something amazing..."
+                        placeholder="Escreva algo aqui!"
                         onChange={handleBody}
                     />
                 </div>
@@ -187,25 +187,19 @@ const CreateBlog = ({ router }) => {
             <div className="row">
                 <div className="col-md-8">
                     {createBlogForm()}
-                    <hr />
-                    {JSON.stringify(title)}
-                    <hr />
-                    {JSON.stringify(body)}
-                    <hr />
-                    {JSON.stringify(categories)}
-                    <hr />
-                    {JSON.stringify(tags)}
+
                 </div>
 
                 <div className="col-md-4">
                     <div>
                         <div className="form-group pb-2">
-                            <h5>Featured image</h5>
+                            <h5>Cover Picture</h5>
                             <hr />
 
-                            <small className="text-muted">Max size: 1mb</small>
+                            <small className="text-muted">Max size: 5MB</small>
+                            <hr></hr>
                             <label className="btn btn-outline-info">
-                                Upload featured image
+                                Upload Cover Picture
                                 <input onChange={handleChange('photo')} type="file" accept="image/*" hidden />
                             </label>
                         </div>

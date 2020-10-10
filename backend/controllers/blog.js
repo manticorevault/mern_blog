@@ -51,6 +51,7 @@ exports.create = (req, res) => {
         blog.excerpt = smartTrim(body, 320, ' ', ' ...');
         blog.slug = slugify(title).toLowerCase();
         blog.mtitle = `${title} | ${process.env.APP_NAME}`;
+        blog.mdesc = stripHtml(body.substring(0, 160)).result;
         blog.postedBy = req.auth._id // If it breaks, try: req.user._id
 
         // Categories and tags
@@ -58,9 +59,9 @@ exports.create = (req, res) => {
         let arrayOfTags = tags && tags.split(',');
 
         if (files.photo) {
-            if (files.photo.size > 10000000) {
+            if (files.photo.size > 50000000) {
                 return res.status(400).json({
-                    error: 'Image should be less then 1mb in size'
+                    error: "Image size should not be bigger than 5MB"
                 });
             }
             blog.photo.data = fs.readFileSync(files.photo.path);
