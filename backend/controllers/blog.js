@@ -216,4 +216,63 @@ exports.remove = (req, res) => {
 
 exports.update = (req, res) => {
 
-}
+    const slug = req.params.slug.toLowerCase();
+
+    Blog.findOne({ slug }).exec((err, oldPost) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+
+        let form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+
+        form.parse(req, (err, fields, files) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Image could not upload'
+                });
+            }
+
+            let originalSlug = oldPost.slug
+            oldPost = _.merge(oldPost, fields)
+            oldPost.slug = originalSlug
+
+            const { body, desc, categories, tags } = fields
+
+            if (body) {
+                oldPost.excerpt = smartTrim(body, 320, " ", " ...")
+                oldPost.mdesc = stripHtml(body.substring(0, 160)).result;
+            }
+
+            if (categories) {
+                oldPost.categories = categories.split(",")
+            }
+
+            if (tags) {
+                oldPost.tags = tags.split(",")
+            }
+
+            if (files.photo) {
+                if (files.photo.size > 50000000) {
+                    return res.status(400).json({
+                        error: "Image size should not be bigger than 5MB"
+                    });
+                }
+                oldPost.photo.data = fs.readFileSync(files.photo.path);
+                oldPost.photo.contentType = files.photo.type;
+            }
+
+            oldPost.save((err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: errorHandler(err)
+                    });
+                }
+
+                res.json(result);
+            });
+        });
+    })
+};
