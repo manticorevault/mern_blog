@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create, list, listPostsCategoriesTags, read, remove, update } = require('../controllers/blog');
+const { create, list, listPostsCategoriesTags, read, remove, update, photo } = require('../controllers/blog');
 
 const { requireLogin, adminMiddleware } = require('../controllers/auth');
 
@@ -12,6 +12,8 @@ router.get("/blog/:slug", read);
 
 router.delete("/blog/:slug", requireLogin, adminMiddleware, remove)
 router.put("/blog/:slug", requireLogin, adminMiddleware, update);
+
+router.get("/blog/photo/:slug", photo)
 
 
 module.exports = router;
