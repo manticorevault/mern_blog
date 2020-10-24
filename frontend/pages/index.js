@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import  Link  from "next/link";
+import Link from "next/link";
 
 const Index = () => {
     return (
@@ -8,6 +8,10 @@ const Index = () => {
             <Link href="/register">
                 <a> Register </a>
             </Link>
+
+            <div>
+
+            </div>
         </Layout>
     )
 }
