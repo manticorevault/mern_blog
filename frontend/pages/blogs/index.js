@@ -5,7 +5,7 @@ import { useState } from "react";
 import { listAllPosts } from "../../actions/blog";
 import { API } from "../../config";
 
-const BlogPosts = () => {
+const BlogPosts = ({ blogs, categories, tags, size }) => {
     return (
         <Layout>
             <main>
@@ -25,13 +25,28 @@ const BlogPosts = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
-                            Mostrar todos os posts
-                            </div>
+                            {JSON.stringify(blogs)}
+                        </div>
                     </div>
                 </div>
             </main>
         </Layout>
     )
+}
+
+BlogPosts.getInitialProps = () => {
+    return listAllPosts().then(data => {
+        if (data.error) {
+            console.log(data.error)
+        } else {
+            return {
+                blogs: data.blogs,
+                categories: data.categories,
+                tags: data.tags,
+                size: data.size
+            }
+        }
+    })
 }
 
 export default BlogPosts;
