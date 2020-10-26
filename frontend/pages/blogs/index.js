@@ -3,6 +3,8 @@ import Link from "next/link";
 import Layout from "../../components/Layout"
 import { useState } from "react";
 import { listAllPosts } from "../../actions/blog";
+import renderHTML from "react-render-html";
+import moment from "moment";
 import { API } from "../../config";
 
 const BlogPosts = ({ blogs, categories, tags, size }) => {
@@ -24,7 +26,7 @@ const BlogPosts = ({ blogs, categories, tags, size }) => {
                         </header>
                         <section>
                             <p className="mark ml-1 pt-2 pb-2">
-                                Escrito por {blog.postedBy.name} | Publicado em {blog.updatedAt}
+                                Escrito por {blog.postedBy.name} | Publicado {moment(blog.updatedAt).fromNow()}
                             </p>
                         </section>
                         <section>
@@ -35,7 +37,9 @@ const BlogPosts = ({ blogs, categories, tags, size }) => {
                             <div className="col-md-4">imagem</div>
                             <div className="col-md-8">
                                 <section>
-                                    <div className="pb-3">{blog.excerpt}</div>
+                                    <div className="pb-3">
+                                        {renderHTML(blog.excerpt)}
+                                    </div>
                                     <Link href={`/blogs/${blog.slug}`}>
                                         <a className="btn btn-primary pt-2">Leia mais</a>
                                     </Link>
