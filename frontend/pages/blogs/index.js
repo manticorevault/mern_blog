@@ -6,6 +6,50 @@ import { listAllPosts } from "../../actions/blog";
 import { API } from "../../config";
 
 const BlogPosts = ({ blogs, categories, tags, size }) => {
+
+    const showAllBlogs = () => {
+
+        return blogs.map((blog, i) => {
+
+            return (
+                <article key={i}>
+
+                    <div className="lead pb-4">
+                        <header>
+                            <Link href={`/blogs/${blog.slug}`}>
+                                <a>
+                                    <h2 className="pt-3 pb-3 font-weight-bold">{blog.title}</h2>
+                                </a>
+                            </Link>
+                        </header>
+                        <section>
+                            <p className="mark ml-1 pt-2 pb-2">
+                                Escrito por {blog.postedBy.name} | Publicado em {blog.updatedAt}
+                            </p>
+                        </section>
+                        <section>
+                            <p>categorias e tags</p>
+                        </section>
+
+                        <div className="row">
+                            <div className="col-md-4">imagem</div>
+                            <div className="col-md-8">
+                                <section>
+                                    <div className="pb-3">{blog.excerpt}</div>
+                                    <Link href={`/blogs/${blog.slug}`}>
+                                        <a className="btn btn-primary pt-2">Leia mais</a>
+                                    </Link>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </article>
+            );
+        });
+    };
+
+
     return (
         <Layout>
             <main>
@@ -25,7 +69,7 @@ const BlogPosts = ({ blogs, categories, tags, size }) => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
-                            {JSON.stringify(blogs)}
+                            {showAllBlogs()}
                         </div>
                     </div>
                 </div>
