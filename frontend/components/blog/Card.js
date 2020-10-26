@@ -19,7 +19,7 @@ const Card = ({ blog }) => {
 
         blog.tags.map((tag, index) => (
             <Link key={index} href={`/tags/${tag.slug}`}>
-                <a className="btn btn-outline-primary mr-1 ml-1 mt-3">
+                <a className="btn btn-outline-info mr-1 ml-1 mt-3">
                     {tag.name}
                 </a>
             </Link>
@@ -42,10 +42,23 @@ const Card = ({ blog }) => {
             <section>
                 {showCategories(blog)}
                 {showTags(blog)}
+                <br />
+                <br />
             </section>
 
             <div className="row">
-                <div className="col-md-4">imagem</div>
+                <div className="col-md-4">
+                    <section>
+                        <img
+                            className="img img-fluid"
+                            style={{ maxHeight: "150px", width: "auto" }}
+                            src={`${API}/blog/photo/${blog.slug}`}
+                            alt={blog.title}
+                        >
+
+                        </img>
+                    </section>
+                </div>
                 <div className="col-md-8">
                     <section>
                         <div className="pb-3">
@@ -57,7 +70,7 @@ const Card = ({ blog }) => {
                     </section>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
