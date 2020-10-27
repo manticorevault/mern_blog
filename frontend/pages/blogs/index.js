@@ -9,16 +9,38 @@ const BlogPosts = ({ blogs, categories, tags, size }) => {
 
     const showAllBlogs = () => {
 
-        return blogs.map((blog, i) => {
+        return blogs.map((blog, index) => {
 
             return (
-                <article key={i}>
+                <article key={index}>
                     <Card blog={blog} />
                     <hr />
                 </article>
             );
         });
     };
+
+    const showAllCategories = () => {
+
+        return categories.map((category, index) => (
+            <Link href={`/categories/${category.slug}`} key={index}>
+                <a className="btn btn-outline-primary mr-1 ml-1 mt-3">
+                    {category.name}
+                </a>
+            </Link>
+        ))
+    }
+
+    const showAllTags = () => {
+
+        return tags.map((tag, index) => (
+            <Link href={`/tags/${tag.slug}`} key={index}>
+                <a className="btn btn-outline-info mr-1 ml-1 mt-3">
+                    {tag.name}
+                </a>
+            </Link>
+        ))
+    }
 
 
     return (
@@ -32,7 +54,11 @@ const BlogPosts = ({ blogs, categories, tags, size }) => {
                                 </h1>
                         </div>
                         <section>
-                            <p> Mostrar Categorias e Tags </p>
+                            <div className="pb-5 text-center">
+                                {showAllCategories()}
+                                <br />
+                                {showAllTags()}
+                            </div>
                         </section>
                     </header>
                 </div>
