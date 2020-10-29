@@ -7,7 +7,28 @@ import moment from "moment"
 import { singleBlog } from "../../actions/blog";
 import { API, DOMAIN, APP_NAME } from "../../config"
 
-const SingleBlog = ({ blog }) => {
+const SingleBlog = ({ blog, query }) => {
+
+    const head = () => (
+        <Head>
+            <title>
+                {blog.title} | {APP_NAME}
+            </title>
+
+            <meta name="description" content={blog.mdesc} />
+            <link rel="canonical" href={`${DOMAIN}/blogs/${query.slug}`} />
+            <meta property="og:title" content={`${blog.title} | ${APP_NAME}`} />
+            <meta property="og:description" content={blog.mdesc} />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content={`${DOMAIN}/blogs/${query.slug}`} />
+            <meta property="og:site_name" content={`${APP_NAME}`} />
+
+            <meta property="og:image" content={`${API}/blog/photo/${blog.slug}`} />
+            <meta property="og:image:secure_url" content={`${API}/blog/photo/${blog.slug}`} />
+            <meta property="og:image:type" content="image/jpeg" />
+            <meta property="fb:app_id" content={`${APP_NAME}`} />
+        </Head>
+    )
 
     const showCategories = blog =>
 
@@ -31,6 +52,9 @@ const SingleBlog = ({ blog }) => {
 
     return (
         <React.Fragment>
+
+            { head()}
+
             <Layout>
                 <main>
                     <article>
@@ -44,16 +68,24 @@ const SingleBlog = ({ blog }) => {
                             </section>
 
                             <section>
-                                <p className="lead mt-3 mark">
-                                    Escrito por {blog.postedBy.name} | Publicado {moment(blog.updatedAt).fromNow()}
-                                </p>
+                                <div className="container">
 
-                                <div className="pb-3">
+                                    <h1 className="display-2 pt-3 text-center font-weight-bold">
+                                        {blog.title}
+                                    </h1>
 
-                                    {showCategories(blog)}
-                                    {showTags(blog)}
-                                    <br />
-                                    <br />
+                                    <p className="lead mt-3 mark">
+                                        Escrito por {blog.postedBy.name} | Publicado {moment(blog.updatedAt).fromNow()}
+                                    </p>
+
+                                    <div className="pb-3">
+
+                                        {showCategories(blog)}
+                                        {showTags(blog)}
+                                        <br />
+                                        <br />
+
+                                    </div>
 
                                 </div>
                             </section>
@@ -94,7 +126,7 @@ SingleBlog.getInitialProps = ({ query }) => {
         if (data.error) {
             console.log(data.error);
         } else {
-            return { blog: data };
+            return { blog: data, query };
         }
     });
 };

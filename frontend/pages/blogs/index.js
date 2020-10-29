@@ -25,7 +25,7 @@ const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, 
 
             <meta property="og:image" content="../../static/images/fazenda.jpeg" />
             <meta property="og:image:secure_url" content="../../static/images/fazenda.jpeg" />
-            <meta property="og:image:type" content="../../static/images/fazenda.jpeg" />
+            <meta property="og:image:type" content="image/jpeg" />
             <meta property="fb:app_id" content={`${APP_NAME}`} />
         </Head>
     )
