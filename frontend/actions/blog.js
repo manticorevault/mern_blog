@@ -37,3 +37,13 @@ export const listAllPosts = (skip, limit) => {
         })
         .catch(err => console.log(err));
 };
+
+export const singleBlog = slug => {
+    return fetch(`${API}/blog/${slug}`, {
+        method: "GET"
+    })
+        .then(res => {
+            return res.json();
+        })
+        .catch(err => console.log(err))
+}
