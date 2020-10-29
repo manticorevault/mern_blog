@@ -7,7 +7,12 @@ import { useState } from "react";
 import { listAllPosts } from "../../actions/blog";
 import { API, DOMAIN, APP_NAME } from "../../config"
 
-const BlogPosts = ({ blogs, categories, tags, size, router }) => {
+const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, router }) => {
+
+    const [limit, setLimit] = useState(blogsLimit);
+    const [skip, setSkip] = useState(0);
+    const [size, setSize] = useState(totalBlogs);
+    const [loadedBlogs, setLoadedBlogs] = useState([]);
 
     const head = () => (
         <Head>
@@ -102,7 +107,11 @@ const BlogPosts = ({ blogs, categories, tags, size, router }) => {
 }
 
 BlogPosts.getInitialProps = () => {
-    return listAllPosts().then(data => {
+
+    let skip = 0;
+    let limit = 4;
+
+    return listAllPosts(skip, limit).then(data => {
         if (data.error) {
             console.log(data.error)
         } else {
@@ -110,7 +119,9 @@ BlogPosts.getInitialProps = () => {
                 blogs: data.blogs,
                 categories: data.categories,
                 tags: data.tags,
-                size: data.size
+                totalBlogs: data.size,
+                blogsLimit: limit,
+                blogSkip: skip
             }
         }
     })
