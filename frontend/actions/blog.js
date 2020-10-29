@@ -16,10 +16,11 @@ export const createBlog = (blog, token) => {
         .catch(err => console.log(err));
 };
 
-export const listAllPosts = (skip, limits) => {
+export const listAllPosts = (skip, limit) => {
 
     const data = {
-        limit, skip
+        limit,
+        skip
     }
 
     return fetch(`${API}/blogs-categories-tags`, {

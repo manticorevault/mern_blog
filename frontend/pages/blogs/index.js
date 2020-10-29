@@ -9,11 +9,6 @@ import { API, DOMAIN, APP_NAME } from "../../config"
 
 const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, router }) => {
 
-    const [limit, setLimit] = useState(blogsLimit);
-    const [skip, setSkip] = useState(0);
-    const [size, setSize] = useState(totalBlogs);
-    const [loadedBlogs, setLoadedBlogs] = useState([]);
-
     const head = () => (
         <Head>
             <title>
@@ -34,6 +29,34 @@ const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, 
             <meta property="fb:app_id" content={`${APP_NAME}`} />
         </Head>
     )
+
+    const [limit, setLimit] = useState(blogsLimit);
+    const [skip, setSkip] = useState(0);
+    const [size, setSize] = useState(totalBlogs);
+    const [loadedBlogs, setLoadedBlogs] = useState([]);
+
+    const loadMore = () => {
+        let toSkip = skip + limit
+        listAllPosts(toSkip, limit).then(data => {
+            if (data.error) {
+                console.log(data.error)
+            } else {
+                setLoadedBlogs([...loadedBlogs, ...data.blogs])
+                setSize(data.size)
+                setSkip(toSkip)
+            }
+        })
+    }
+
+    const loadMoreButton = () => {
+        return (
+            size > 0 && size >= limit && (
+                <button onClick={loadMore} className="btn btn-outline-primary btn-lg" >
+                    Carregar mais
+                </button>
+            )
+        )
+    }
 
     const showAllBlogs = () => {
 
@@ -70,6 +93,15 @@ const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, 
         ))
     }
 
+    const showLoadedBlogs = () => {
+        return loadedBlogs.map((blog, index) => (
+
+            <article key={index}>
+                <Card blog={blog} />
+            </article>
+        ))
+    }
+
 
     return (
         <React.Fragment>
@@ -94,11 +126,15 @@ const BlogPosts = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, 
                     </div>
 
                     <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-md-12">
-                                {showAllBlogs()}
-                            </div>
-                        </div>
+                        {showAllBlogs()}
+                    </div>
+
+                    <div className="container-fluid">
+                        {showLoadedBlogs()}
+                    </div>
+
+                    <div className="text-center pt-5 pb-5">
+                        {loadMoreButton()}
                     </div>
                 </main>
             </Layout>
