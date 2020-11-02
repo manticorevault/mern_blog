@@ -6,6 +6,7 @@ import renderHTML from "react-render-html"
 import moment from "moment"
 import { singleBlog, listRelated } from "../../actions/blog";
 import { API, DOMAIN, APP_NAME } from "../../config"
+import SmallCard from "../../components/blog/SmallCard"
 
 const SingleBlog = ({ blog, query }) => {
 
@@ -66,6 +67,16 @@ const SingleBlog = ({ blog, query }) => {
             </Link>
         ))
 
+    const showRelatedBlogs = () => {
+        return related.map((blog, index) => (
+            <div className="col-md-4" key={index}>
+                <article>
+                    <SmallCard blog={blog} />
+                </article>
+            </div>
+        ))
+    }
+
     return (
         <React.Fragment>
 
@@ -118,12 +129,14 @@ const SingleBlog = ({ blog, query }) => {
 
                         <div className="container pb-5">
                             <h4 className="text-center pt-5 pb-5 h2">
-                                Voce Tambem Pode Gostar
+                                Voce pode gostar tambem de:
                             </h4>
 
                             <hr />
 
-                            {JSON.stringify(related)}
+                            <div className="row">
+                                {showRelatedBlogs()}
+                            </div>
                         </div>
 
                         <div className="container pb-5">
