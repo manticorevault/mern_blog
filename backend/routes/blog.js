@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { create, list, listPostsCategoriesTags, read, remove, update, photo } = require('../controllers/blog');
+const { create, list, listPostsCategoriesTags, read, remove, update, photo, listRelated } = require('../controllers/blog');
 
 const { requireLogin, adminMiddleware } = require('../controllers/auth');
 
 router.post('/blog', requireLogin, adminMiddleware, create);
 router.post("/blogs-categories-tags", listPostsCategoriesTags);
+router.post("/blogs/related", listRelated)
 
 router.get("/blogs", list);
 router.get("/blog/:slug", read);

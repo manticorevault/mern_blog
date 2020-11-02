@@ -1,13 +1,29 @@
 import Head from "next/head";
 import Link from "next/link";
 import Layout from "../../components/Layout"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import renderHTML from "react-render-html"
 import moment from "moment"
-import { singleBlog } from "../../actions/blog";
+import { singleBlog, listRelated } from "../../actions/blog";
 import { API, DOMAIN, APP_NAME } from "../../config"
 
 const SingleBlog = ({ blog, query }) => {
+
+    const [related, setRelated] = useState([]);
+
+    const loadRelated = () => {
+        listRelated({ blog }).then(data => {
+            if (data.error) {
+                console.log(data.error)
+            } else {
+                setRelated(data)
+            }
+        })
+    }
+
+    useEffect(() => {
+        loadRelated()
+    }, [])
 
     const head = () => (
         <Head>
@@ -107,7 +123,7 @@ const SingleBlog = ({ blog, query }) => {
 
                             <hr />
 
-                            <p> Mostrar Mais Relacionados</p>
+                            {JSON.stringify(related)}
                         </div>
 
                         <div className="container pb-5">
