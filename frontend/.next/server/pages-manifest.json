@@ -2,5 +2,10 @@
   "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/blogs/[slug]": "pages/blogs/[slug].js"
+  "/next/dist/pages/_error": "pages/next/dist/pages/_error.js",
+  "/blogs/[slug]": "pages/blogs/[slug].js",
+  "/blogs": "pages/blogs.js",
+  "/login": "pages/login.js",
+  "/admin": "pages/admin.js",
+  "/admin/manage/blogs": "pages/admin/manage/blogs.js"
 }
