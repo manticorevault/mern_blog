@@ -208,7 +208,7 @@ exports.remove = (req, res) => {
         }
 
         res.json({
-            message: "This post was successfully deleted"
+            message: "Esse post foi deletado com sucesso!"
         })
     })
 
@@ -231,7 +231,7 @@ exports.update = (req, res) => {
         form.parse(req, (err, fields, files) => {
             if (err) {
                 return res.status(400).json({
-                    error: 'Image could not upload'
+                    error: 'Nao foi possivel realizar o upload da imagem'
                 });
             }
 
@@ -257,7 +257,7 @@ exports.update = (req, res) => {
             if (files.photo) {
                 if (files.photo.size > 50000000) {
                     return res.status(400).json({
-                        error: "Image size should not be bigger than 5MB"
+                        error: "O tamanho da imagem nao deve ser mais que 5MB"
                     });
                 }
                 oldPost.photo.data = fs.readFileSync(files.photo.path);
