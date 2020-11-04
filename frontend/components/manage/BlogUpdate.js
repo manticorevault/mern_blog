@@ -10,6 +10,7 @@ import { singleBlog, updateBlog } from '../../actions/blog';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import { QuillModules, QuillFormats } from "../../helpers/quill"
 import '../../node_modules/react-quill/dist/quill.snow.css';
+import { API } from "../../config"
 
 const BlogUpdate = ({ router }) => {
 
@@ -30,6 +31,7 @@ const BlogUpdate = ({ router }) => {
     });
 
     const { error, success, formData, title } = values;
+    const token = getCookie("token")
 
     useEffect(() => {
 
@@ -189,10 +191,41 @@ const BlogUpdate = ({ router }) => {
         formData.set("body", e)
     }
 
-    const editBlog = () => {
-        console.log("Atualizar o blog")
+    const editBlog = (e) => {
+        e.preventDefault()
+        updateBlog(formData, token, router.query.slug).then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error })
+            } else {
+                setValues({ ...values, title: "", success: `O post "${data.title}" foi atualizado com sucesso` })
+                if (isAuth() && isAuth().role === 1) {
+                    // Redirect to the same page, updated
+                    // Router.replace(`/admin/manage/${router.query.slug}`)
+
+                    // Redirect to the dashboard
+                    Router.replace(`/admin`)
+                } else if (isAuth() && isAuth().role === 0) {
+                    // Redirect to the same page, updated
+                    Router.replace(`/user/manage/${router.query.slug}`)
+
+                    // Redirect to the dashboard
+                    Router.replace(`/user`)
+                }
+            }
+        })
     }
 
+    const showErrorMessage = () => (
+        <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
+            {error}
+        </div>
+    );
+
+    const showSuccessMessage = () => (
+        <div className="alert alert-success" style={{ display: success ? '' : 'none' }}>
+            {success}
+        </div>
+    );
     const updateBlogForm = () => {
         return (
             <form onSubmit={editBlog}>
@@ -225,9 +258,18 @@ const BlogUpdate = ({ router }) => {
             <div className="row">
                 <div className="col-md-8">
                     {updateBlogForm()}
+
                     <div className="pt-3">
-                        <p> Mensagem de Sucesso / Erro </p>
+                        {showSuccessMessage()}
+                        {showErrorMessage()}
                     </div>
+
+                    {body && (
+                        <img
+                            src={`${API}/blog/photo/${router.query.slug}`}
+                            alt={title}
+                            style={{ width: '100%' }} />
+                    )}
 
                 </div>
                 <div className="col-md-4">
