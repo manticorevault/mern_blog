@@ -45,33 +45,12 @@
       "static/chunks/styles.js",
       "static/chunks/pages/admin/manage/[slug].js"
     ],
-    "/admin/manage/blog": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/css/styles.chunk.css",
-      "static/chunks/styles.js",
-      "static/chunks/pages/admin/manage/blog.js"
-    ],
     "/admin/manage/blogs": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/css/styles.chunk.css",
       "static/chunks/styles.js",
       "static/chunks/pages/admin/manage/blogs.js"
-    ],
-    "/blogs": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/css/styles.chunk.css",
-      "static/chunks/styles.js",
-      "static/chunks/pages/blogs.js"
-    ],
-    "/blogs/[slug]": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/css/styles.chunk.css",
-      "static/chunks/styles.js",
-      "static/chunks/pages/blogs/[slug].js"
     ]
   },
   "ampFirstPages": []
