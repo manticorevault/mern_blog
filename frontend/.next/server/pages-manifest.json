@@ -3,5 +3,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/admin/manage/blogs": "pages/admin/manage/blogs.js",
-  "/blogs": "pages/blogs.js"
+  "/admin/manage/blog": "pages/admin/manage/blog.js",
+  "/admin": "pages/admin.js",
+  "/admin/manage/[slug]": "pages/admin/manage/[slug].js",
+  "/blogs": "pages/blogs.js",
+  "/blogs/[slug]": "pages/blogs/[slug].js",
+  "/": "pages/index.js"
 }

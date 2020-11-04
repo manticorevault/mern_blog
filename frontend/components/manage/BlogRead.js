@@ -44,6 +44,30 @@ const BlogRead = () => {
         }
     }
 
+    const showUpdateButton = (blog) => {
+
+        // Button authorized for regular user. 
+        // Change to 1 for Admin only.
+        if (isAuth() && isAuth().role === 0) {
+            return (
+                <Link href={`/user/manage/${blog.slug}`}>
+                    <a className="btn btn-sm btn-warning">
+                        Atualizar
+                    </a>
+                </Link>
+            )
+            // Now it authorizes the Admin
+        } else if (isAuth() && isAuth().role === 1) {
+            return (
+                <Link href={`/admin/manage/${blog.slug}`}>
+                    <a className="btn btn-sm btn-warning ml-2">
+                        Atualizar
+                    </a>
+                </Link>
+            )
+        }
+    }
+
     const showAllBlogs = () => {
         return blogs.map((blog, index) => {
             return (
@@ -61,6 +85,7 @@ const BlogRead = () => {
                     >
                         Deletar
                     </button>
+                    {showUpdateButton(blog)}
                 </div>
             )
         })
