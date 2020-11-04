@@ -100,14 +100,14 @@ const CreateBlog = ({ router }) => {
         }
     };
 
-    const handleToggle = c => () => {
+    const handleToggle = category => () => {
         setValues({ ...values, error: '' });
-        // return the first index or -1
-        const clickedCategory = checked.indexOf(c);
+
+        const clickedCategory = checked.indexOf(category);
         const all = [...checked];
 
         if (clickedCategory === -1) {
-            all.push(c);
+            all.push(category);
         } else {
             all.splice(clickedCategory, 1);
         }
@@ -116,14 +116,14 @@ const CreateBlog = ({ router }) => {
         formData.set('categories', all);
     };
 
-    const handleTagsToggle = t => () => {
+    const handleTagsToggle = tag => () => {
         setValues({ ...values, error: '' });
-        // return the first index or -1
-        const clickedTag = checked.indexOf(t);
+
+        const clickedTag = checked.indexOf(tag);
         const all = [...checkedTag];
 
         if (clickedTag === -1) {
-            all.push(t);
+            all.push(tag);
         } else {
             all.splice(clickedTag, 1);
         }
@@ -135,10 +135,10 @@ const CreateBlog = ({ router }) => {
     const showCategories = () => {
         return (
             categories &&
-            categories.map((c, i) => (
-                <li key={i} className="list-unstyled">
-                    <input onChange={handleToggle(c._id)} type="checkbox" className="mr-2" />
-                    <label className="form-check-label">{c.name}</label>
+            categories.map((category, index) => (
+                <li key={index} className="list-unstyled">
+                    <input onChange={handleToggle(category._id)} type="checkbox" className="mr-2" />
+                    <label className="form-check-label">{category.name}</label>
                 </li>
             ))
         );
@@ -147,10 +147,10 @@ const CreateBlog = ({ router }) => {
     const showTags = () => {
         return (
             tags &&
-            tags.map((t, i) => (
-                <li key={i} className="list-unstyled">
-                    <input onChange={handleTagsToggle(t._id)} type="checkbox" className="mr-2" />
-                    <label className="form-check-label">{t.name}</label>
+            tags.map((tag, index) => (
+                <li key={index} className="list-unstyled">
+                    <input onChange={handleTagsToggle(tag._id)} type="checkbox" className="mr-2" />
+                    <label className="form-check-label">{tag.name}</label>
                 </li>
             ))
         );
@@ -210,13 +210,13 @@ const CreateBlog = ({ router }) => {
                 <div className="col-md-4">
                     <div>
                         <div className="form-group pb-2">
-                            <h5>Cover Picture</h5>
+                            <h5>Imagem de Capa</h5>
                             <hr />
 
                             <small className="text-muted">Max size: 5MB</small>
                             <hr></hr>
                             <label className="btn btn-outline-info">
-                                Upload Cover Picture
+                                Subir Imagem de Capa
                                 <input onChange={handleChange('photo')} type="file" accept="image/*" hidden />
                             </label>
                         </div>

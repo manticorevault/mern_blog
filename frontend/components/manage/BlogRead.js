@@ -60,7 +60,7 @@ const BlogRead = () => {
         } else if (isAuth() && isAuth().role === 1) {
             return (
                 <Link href={`/admin/manage/${blog.slug}`}>
-                    <a className="btn btn-sm btn-warning ml-2">
+                    <a className="btn btn-sm btn-warning mr-2">
                         Atualizar
                     </a>
                 </Link>
@@ -79,13 +79,16 @@ const BlogRead = () => {
                     <p className="mark">
                         Escrito por {blog.postedBy.name} | Publicado em {moment(blog.updatedAt).fromNow()}
                     </p>
+
+                    {showUpdateButton(blog)}
+
                     <button
                         className="btn btn-sm btn-danger"
                         onClick={() => confirmDelete(blog.slug)}
                     >
                         Deletar
                     </button>
-                    {showUpdateButton(blog)}
+
                 </div>
             )
         })
