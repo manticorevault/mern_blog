@@ -1,4 +1,5 @@
 const Category = require("../models/categories");
+const Blog = require("../models/blog")
 const slugify = require("slugify");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
@@ -9,7 +10,7 @@ exports.create = (req, res) => {
     let category = new Category({ name, slug })
 
     category.save((err, data) => {
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 error: errorHandler(err)
             })
@@ -21,7 +22,7 @@ exports.create = (req, res) => {
 
 exports.list = (req, res) => {
     Category.find({}).exec((err, data) => {
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 error: errorHandler(err)
             })
@@ -32,16 +33,28 @@ exports.list = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    const slug = req.params.slug.toLowerCase()
+    const slug = req.params.slug.toLowerCase();
 
     Category.findOne({ slug }).exec((err, category) => {
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 error: errorHandler(err)
             });
         }
 
-        err.json(category);
+        Blog.find({ categories: category })
+            .populate('categories', '_id name slug')
+            .populate('tags', '_id name slug')
+            .populate('postedBy', '_id name')
+            .select('_id title slug excerpt categories postedBy tags createdAt updatedAt')
+            .exec((err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: errorHandler(err)
+                    });
+                }
+                res.json({ category: category, blogs: data });
+            });
     });
 };
 
@@ -55,7 +68,7 @@ exports.remove = (req, res) => {
             });
         }
         res.json({
-            message: 'Category was successfully deleted'
+            message: 'Categoria deletada com sucesso!'
         });
     });
 };
