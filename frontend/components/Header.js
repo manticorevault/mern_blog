@@ -5,6 +5,7 @@ import { logout, isAuth } from "../actions/auth";
 import Router from "next/router";
 import NProgress from "nprogress";
 import ".././node_modules/nprogress/nprogress.css";
+import Search from "../components/blog/Search"
 import {
   Collapse,
   Navbar,
@@ -35,7 +36,8 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
+
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink className="font-weight-bold">
@@ -103,7 +105,10 @@ const Header = () => {
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+
+      <Search />
+
+    </React.Fragment>
   );
 };
 
