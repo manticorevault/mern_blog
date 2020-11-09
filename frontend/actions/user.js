@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import queryString from "query-string"
+import { API } from '../config';
 
 export const userPublicProfile = (username) => {
     return fetch(`${API}/user/${username}`, {
