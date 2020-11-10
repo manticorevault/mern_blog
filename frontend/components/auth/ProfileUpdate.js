@@ -55,7 +55,7 @@ const ProfileUpdate = () => {
         setValues({ ...values, loading: true });
         update(token, userData).then(data => {
             if (data.error) {
-                setValues({ ...value, error: data.error, success: false, loading: false });
+                setValues({ ...values, error: data.error, success: false, loading: false });
             } else {
                 setValues({
                     ...values,
@@ -142,7 +142,7 @@ const ProfileUpdate = () => {
                 </label>
                 <input
                     onChange={handleChange("password")}
-                    type="text"
+                    type="password"
                     value={password}
                     className="form-control"
                 />

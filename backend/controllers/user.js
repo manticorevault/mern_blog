@@ -62,6 +62,13 @@ exports.update = (req, res) => {
         let user = req.profile
         user = _.extend(user, fields)
 
+        //TODO: Adicionar mais validacoes de senha com sinais e maiusculo/minusculo
+        if (fields.password && fields.password.length < 8) {
+            return res.status(400).json({
+                error: "A senha deve ter ao menos 8 caracteres"
+            })
+        }
+
         if (files.photo) {
             if (files.photo.size > 50000000) {
                 return res.status(400).json({
