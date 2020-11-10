@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Router from "next/router";
-import { getCookie, isAuth } from "../../actions/auth"
+import { getCookie, isAuth, updateUser } from "../../actions/auth"
 import { getProfile, update } from "../../actions/user"
 import { API } from '../../config';
 
 const ProfileUpdate = () => {
     const [values, setValues] = useState({
         username: "",
+        username_for_photo: "",
         name: "",
         email: "",
         about: "",
@@ -16,11 +17,23 @@ const ProfileUpdate = () => {
         success: false,
         loading: false,
         photo: "",
-        userData: ""
+        userData: process.browser && new FormData()
     })
 
     const token = getCookie("token")
-    const { username, name, email, about, password, error, success, loading, photo, userData } = values
+    const {
+        username,
+        username_for_photo,
+        name,
+        email,
+        about,
+        password,
+        error,
+        success,
+        loading,
+        photo,
+        userData
+    } = values
 
     const init = () => {
         getProfile(token).then(data => {
@@ -30,6 +43,7 @@ const ProfileUpdate = () => {
                 setValues({
                     ...values,
                     username: data.username,
+                    username_for_photo: data.username,
                     name: data.name,
                     email: data.email,
                     about: data.about
@@ -58,16 +72,18 @@ const ProfileUpdate = () => {
             if (data.error) {
                 setValues({ ...values, error: data.error, success: false, loading: false });
             } else {
-                setValues({
-                    ...values,
-                    username: data.username,
-                    name: data.name,
-                    email: data.email,
-                    about: data.about,
-                    password: '',
-                    success: true,
-                    loading: false
-                });
+                updateUser(data, () => {
+                    setValues({
+                        ...values,
+                        username: data.username,
+                        name: data.name,
+                        email: data.email,
+                        about: data.about,
+                        password: '',
+                        success: true,
+                        loading: false
+                    });
+                })
             }
         });
     };
@@ -182,7 +198,7 @@ const ProfileUpdate = () => {
                 <div className="row">
                     <div className="col-md-4">
                         <img
-                            src={`${API}/user/photo/${username}`}
+                            src={`${API}/user/photo/${username_for_photo}`}
                             className="img img-fluid img-thumbnail mb-3"
                             style={{ maxHeight: 'auto', maxWidth: '100%' }}
                             alt="foto de perfil do usuario"
