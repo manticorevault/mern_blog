@@ -102,6 +102,12 @@ const Header = () => {
               </NavItem>
             )}
 
+            <NavItem>
+              <Link href="/user/manage/create">
+                <NavLink className="btn btn-primary text-light ml-2">Criar Novo Post</NavLink>
+              </Link>
+            </NavItem>
+
           </Nav>
         </Collapse>
       </Navbar>
