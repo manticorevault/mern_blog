@@ -49,10 +49,17 @@ const UserProfile = ({ user, blogs, query }) => {
                             <div className="card">
                                 <div className="card-body">
                                     <h5>{user.name}</h5>
-                                    <Link href={`${user.username}`}>
-                                        <a>Ver Perfil</a>
-                                    </Link>
+
                                     <p className="text-muted">Cadastrada em {moment(user.createdAt).fromNow()}</p>
+                                </div>
+
+                                <div className="col-md-4">
+                                    <img
+                                        src={`${API}/user/photo/${user.username}`}
+                                        className="img img-fluid img-thumbnail mb-3"
+                                        style={{ maxHeight: '100px', maxWidth: '100%' }}
+                                        alt="user profile"
+                                    />
                                 </div>
                             </div>
                         </div>
