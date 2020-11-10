@@ -9,10 +9,11 @@ const {
     update,
     photo,
     listRelated,
-    listSearch
+    listSearch,
+    listByUser
 } = require('../controllers/blog');
 
-const { requireLogin, adminMiddleware, authMiddleware } = require('../controllers/auth');
+const { requireLogin, adminMiddleware, authMiddleware, canManageBlogs } = require('../controllers/auth');
 
 router.post('/blog', requireLogin, adminMiddleware, create);
 router.post("/blogs-categories-tags", listPostsCategoriesTags);
@@ -28,7 +29,9 @@ router.put("/blog/:slug", requireLogin, adminMiddleware, update);
 
 // User authorization for CRUDing blogs
 router.post('/user/blog', requireLogin, authMiddleware, create);
-router.delete("/user/blog/:slug", requireLogin, authMiddleware, remove)
-router.put("/user/blog/:slug", requireLogin, authMiddleware, update);
+router.get("/:username/blogs", listByUser);
+router.delete("/user/blog/:slug", requireLogin, authMiddleware, canManageBlogs, remove)
+router.put("/user/blog/:slug", requireLogin, authMiddleware, canManageBlogs, update);
+
 
 module.exports = router;

@@ -2,6 +2,8 @@ const User = require("../models/user");
 const shortId = require("shortid");
 const jwt = require("jsonwebtoken");
 const expressJWT = require("express-jwt");
+const { errorHandler } = require('../helpers/dbErrorHandler');
+const Blog = require("../models/blog");
 
 exports.register = (req, res) => {
     User.findOne({ email: req.body.email }).exec((err, user) => {
@@ -104,3 +106,25 @@ exports.adminMiddleware = (req, res, next) => {
         next();
     });
 };
+
+exports.canManageBlogs = (req, res, next) => {
+    const slug = req.params.slug.toLowerCase()
+
+    Blog.findOne({ slug }).exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+
+        let authorizedUser = data.postedBy._id.toString() === req.profile._id.toString();
+
+        if (!authorizedUser) {
+            return res.status(400).json({
+                error: "Voce nao tem autorizacao a acessar essa pagina"
+            })
+        }
+
+        next();
+    })
+}

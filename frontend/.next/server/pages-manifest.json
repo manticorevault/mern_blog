@@ -2,6 +2,10 @@
   "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/profile/[username]": "pages/profile/[username].js",
-  "/blogs/[slug]": "pages/blogs/[slug].js"
+  "/user": "pages/user.js",
+  "/categories/[slug]": "pages/categories/[slug].js",
+  "/blogs": "pages/blogs.js",
+  "/tags/[slug]": "pages/tags/[slug].js",
+  "/blogs/[slug]": "pages/blogs/[slug].js",
+  "/profile/[username]": "pages/profile/[username].js"
 }

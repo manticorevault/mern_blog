@@ -5,7 +5,7 @@ import { getCookie, isAuth } from '../../actions/auth';
 import { listBlogs, removeBlog } from '../../actions/blog';
 import moment from "moment"
 
-const BlogRead = () => {
+const BlogRead = ({ username }) => {
 
     const [blogs, setBlogs] = useState([]);
     const [message, setMessage] = useState("");
@@ -16,7 +16,7 @@ const BlogRead = () => {
     }, [])
 
     const loadBlogs = () => {
-        listBlogs().then(data => {
+        listBlogs(username).then(data => {
             if (data.error) {
                 console.log(data.error)
             } else {
@@ -83,7 +83,7 @@ const BlogRead = () => {
                     {showUpdateButton(blog)}
 
                     <button
-                        className="btn btn-sm btn-danger"
+                        className="btn btn-sm btn-danger ml-2"
                         onClick={() => confirmDelete(blog.slug)}
                     >
                         Deletar

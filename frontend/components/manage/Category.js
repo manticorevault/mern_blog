@@ -123,12 +123,12 @@ const Category = () => {
 
     return (
         <React.Fragment>
-            { showSuccess() }
-            { showError() }
-            { showRemoved() }
+            { showSuccess()}
+            { showError()}
+            { showRemoved()}
             <div onMouseMove={mouseMoveHandler}>
-                { newCategoryForm() }
-                { showCategories() }
+                {newCategoryForm()}
+                {showCategories()}
             </div>
         </React.Fragment>
     );
