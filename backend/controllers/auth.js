@@ -34,14 +34,14 @@ exports.login = (req, res) => {
 
     // Checks if user exists
     User.findOne({ email }).exec((err, user) => {
-        if(err || !user) {
+        if (err || !user) {
             return res.status(400).json({
                 error: "This e-mail is not related to any user. Please, register to access the platform!"
             });
         };
 
         // Authenticate e-mail and password
-        if(!user.authenticate(password)) {
+        if (!user.authenticate(password)) {
             return res.status(400).json({
                 error: "E-mail and password does not match!"
             });
@@ -54,7 +54,7 @@ exports.login = (req, res) => {
         const { _id, username, name, email, role } = user;
         return res.json({
             token,
-            user: { _id, username, name, email, role } 
+            user: { _id, username, name, email, role }
         });
     });
 };
@@ -73,7 +73,7 @@ exports.requireLogin = expressJWT({
 });
 
 exports.authMiddleware = (req, res, next) => {
-    const authUserId = req.user._id;
+    const authUserId = req.auth._id;
     User.findById({ _id: authUserId }).exec((err, user) => {
         if (err || !user) {
             return res.status(400).json({
