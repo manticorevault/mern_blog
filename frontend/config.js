@@ -9,3 +9,5 @@ export const DOMAIN = publicRuntimeConfig.PRODUCTION
     : publicRuntimeConfig.DOMAIN_DEVELOPMENT
 
 export const DISQUIS_SHORTNAME = publicRuntimeConfig.DISQUIS_SHORTNAME
+
+export const GOOGLE_CLIENT_ID = publicRuntimeConfig.GOOGLE_CLIENT_ID

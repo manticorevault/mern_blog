@@ -11,7 +11,7 @@ router.post("/login", userLoginValidator, runValidation, login);
 router.get("/logout", logout);
 
 // Google Login
-router.post("google-login", googleLogin);
+router.post("/google-login", googleLogin);
 
 // Route Guard
 

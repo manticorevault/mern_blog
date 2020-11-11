@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { login, authenticate, isAuth } from '../../actions/auth';
 import Router from 'next/router';
+import Link from "next/link";
+import LoginGoogle from "./LoginGoogle"
 
 const LoginComponent = () => {
     const [values, setValues] = useState({
@@ -32,13 +34,13 @@ const LoginComponent = () => {
                 // Save user info to localstorage
                 // Authenticate user
                 authenticate(data, () => {
-                    if(isAuth() && isAuth().role === 1) {
+                    if (isAuth() && isAuth().role === 1) {
                         Router.push("/admin");
                     } else {
                         Router.push("/user");
                     }
                 });
-            }; 
+            };
         });
     };
 
@@ -85,6 +87,7 @@ const LoginComponent = () => {
             {showError()}
             {showLoading()}
             {showMessage()}
+            <LoginGoogle />
             {showForm && loginForm()}
         </React.Fragment>
     );
