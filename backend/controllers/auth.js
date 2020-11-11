@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const expressJWT = require("express-jwt");
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Blog = require("../models/blog");
+const { OAuth2Client } = require("google-auth-library");
+const { response } = require("express");
 
 exports.register = (req, res) => {
     User.findOne({ email: req.body.email }).exec((err, user) => {
@@ -126,5 +128,49 @@ exports.canManageBlogs = (req, res, next) => {
         }
 
         next();
+    })
+}
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+exports.googleLogin = (req, res) => {
+    const idToken = req.body.tokenId
+    client.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID }).then(response => {
+        const { email_verified, name, email, jti } = response.payload
+
+        if (email_verified) {
+            User.findOne({ email }).exec((err, user) => {
+                if (user) {
+
+                    // User or Auth
+                    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
+                    res.cookie("token", token, { expiresIn: "1d" })
+                    const { _id, email, name, role, username } = user;
+                    return res.json({ token, user: { _id, email, name, role, username } })
+                } else {
+                    let username = shortId.generate()
+                    let profile = `${process.env.CLIENT_URL}/profile/${username}`
+                    let password = jti + process.env.JWT_SECRET
+
+                    user = new User({ name, email, profile, username, password })
+                    user.save((err, data) => {
+                        if (err) {
+                            return res.status(400).json({
+                                error: errorHandler(err)
+                            })
+                        }
+
+                        const token = jwt.sign({ _id: data._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
+                        res.cookie("token", token, { expiresIn: "1d" })
+                        const { _id, email, name, role, username } = user;
+                        return res.json({ token, user: { _id, email, name, role, username } })
+                    })
+                }
+            })
+        } else {
+            return res.status(400).json({
+                error: "Houve um erro com o Login do Google. Por favor, tente novamente"
+            })
+        }
     })
 }

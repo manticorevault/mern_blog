@@ -1,7 +1,7 @@
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
-export const API = publicRuntimeConfig.PRODUCTION ? "blogdafazenda.com.br" : "http://localhost:8000/api";
+export const API = publicRuntimeConfig.PRODUCTION ? "blogdafazenda.com" : "http://localhost:8000/api";
 export const APP_NAME = publicRuntimeConfig.APP_NAME;
 
 export const DOMAIN = publicRuntimeConfig.PRODUCTION

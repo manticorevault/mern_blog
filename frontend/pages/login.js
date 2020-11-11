@@ -1,8 +1,8 @@
 import Layout from "../components/Layout";
-import { Router, withRouter } from "next/router"
+import { withRouter } from "next/router"
 import LoginComponent from "../components/auth/LoginComponent";
 
-const Login = () => {
+const Login = ({ router }) => {
 
     const showRedirectMessage = () => {
         if (router.query.message) {

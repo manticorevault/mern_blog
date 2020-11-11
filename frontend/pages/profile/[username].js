@@ -83,14 +83,15 @@ const UserProfile = ({ user, blogs, query }) => {
                         </div>
 
                         <div className="col-md-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-light">
+                            <div className="card-body">
+                                <div className="mr-0">
+                                    <a className="card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-light"
+                                        href="mailto:abc@example.com?subject = Feedback&body = Message"
+                                    >
                                         Entre em contato com {user.name}
-                                    </h5>
-                                    <br />
-                                    <p>Formulario de Contato</p>
+                                    </a>
                                 </div>
+                                <br />
                             </div>
                         </div>
                     </div>
