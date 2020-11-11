@@ -1,6 +1,20 @@
 import fetch from 'isomorphic-fetch';
 import cookie from 'js-cookie';
+import Router from "next/dist/next-server/lib/router/router";
 import { API } from '../config';
+
+export const handleResponse = response => {
+    if (response.status === 401) {
+        logout(() => {
+            Router.push({
+                pathname: "/login",
+                query: {
+                    message: "Sua sessao expirou. Por favor, entre novamente"
+                }
+            })
+        })
+    }
+}
 
 export const register = user => {
     return fetch(`${API}/register`, {
@@ -39,7 +53,7 @@ export const logout = (next) => {
         method: "GET"
     })
         .then(response => {
-            console.log("Logged out successfully")
+            console.log("Voce saiu com sucesso")
         })
         .catch(err => console.log(err))
 };
