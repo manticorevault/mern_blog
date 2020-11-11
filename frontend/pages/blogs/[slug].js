@@ -7,6 +7,7 @@ import moment from "moment"
 import { singleBlog, listRelated } from "../../actions/blog";
 import { API, DOMAIN, APP_NAME } from "../../config"
 import SmallCard from "../../components/blog/SmallCard"
+import DisqusThread from "../../components/DisqusThread"
 
 const SingleBlog = ({ blog, query }) => {
 
@@ -77,6 +78,14 @@ const SingleBlog = ({ blog, query }) => {
         ))
     }
 
+    const showComments = () => {
+        return (
+            <div>
+                <DisqusThread id={blog._id} title={blog.title} path={`/blog/${blog.slug}`} />
+            </div>
+        );
+    };
+
     return (
         <React.Fragment>
 
@@ -141,10 +150,6 @@ const SingleBlog = ({ blog, query }) => {
                             <div className="row">
                                 {showRelatedBlogs()}
                             </div>
-                        </div>
-
-                        <div className="container pb-5">
-                            <p> Mostrar Comentarios</p>
                         </div>
 
                     </article>

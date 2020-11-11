@@ -103,7 +103,7 @@ const Header = () => {
             )}
 
             <NavItem>
-              <Link href="/user/manage/create">
+              <Link href="/user/manage/blog">
                 <NavLink className="btn btn-primary text-light ml-2">Criar Novo Post</NavLink>
               </Link>
             </NavItem>
