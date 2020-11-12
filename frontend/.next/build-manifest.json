@@ -24,26 +24,19 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/blogs/[slug]": [
+    "/blogs": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/css/styles.chunk.css",
       "static/chunks/styles.js",
-      "static/chunks/pages/blogs/[slug].js"
+      "static/chunks/pages/blogs.js"
     ],
-    "/login": [
+    "/user": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/css/styles.chunk.css",
       "static/chunks/styles.js",
-      "static/chunks/pages/login.js"
-    ],
-    "/profile/[username]": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/css/styles.chunk.css",
-      "static/chunks/styles.js",
-      "static/chunks/pages/profile/[username].js"
+      "static/chunks/pages/user.js"
     ]
   },
   "ampFirstPages": []
